@@ -86,7 +86,8 @@ func _physics_process(delta: float) -> void:
 	var old_rank = current_rank
 	current_rank = "F"
 	for i in RANK_AMOUNTS.keys():
-		if (Global.score + (combo_amount * 500) + (Global.time * 50)) >= (S_RANK_SCORES[Global.world_num - 1][Global.level_num - 1] * i):
+		var time = max(Global.time, 0)
+		if (Global.score + (combo_amount * 500) + (time * 50)) >= (S_RANK_SCORES[Global.world_num - 1][Global.level_num - 1] * i):
 			current_rank = RANK_AMOUNTS[i]
 	if current_rank == "S" and combo_breaks <= 0 and combo_amount >= 1:
 		current_rank = "P"

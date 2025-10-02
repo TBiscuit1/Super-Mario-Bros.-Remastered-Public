@@ -415,6 +415,7 @@ ENEMY_BLOOPER,,Blooper,Bloups,Blooper,БлУпep,Blooper,,ＢＬＯＯＰＥＲ,
 ENEMY_HAMMERBRO,,Hammer Bro,Frère Marteau,Brat Młot,Бpateц-moлotok,Martillo Bro,,ＨＡＭＭＥＲ ＢＲＯ,Pareng Martilyo,Hammer-Bruder,Çekİç Kardeş,Palu Saudara,Irmão Martelo,ハンマーブロス
 ENEMY_THWOMP,,Thwomp,Thwomp,Thwomp,Бamc,,,ＴＨＷＯＭＰ,Thwomp,Thwomp,,Thwomp,Thwomp,ドッスン
 ENEMY_BOWSER,,Bowser,Bowser,Bowser,БoУзep,,,ＢＯＷＳＥＲ,Haring Kupa,Bowser,,Bowser,Bowser,クッパ
+ENEMY_BOWSERS_BRO,,Bowser's Bro,,,,,,,,,,,,
 ENEMY_POKEY,,Pokey,Pokey,Pokey,Пokи,,,ＰＯＫＥＹ,Kaktus,Kaktus,,Pokey,Pokey,サンボ
 ENEMY_LAKITU,,Lakitu,Lakitu,Lakitu,ЛakиtУ,,,ＬＡＫＩＴＵ,Lakitu,Lakitu,Lakİtu,Lakitu,Lakitu,ジュゲム
 ENEMY_BULLETBILL,,Bullet Bill,Bill Balle,Pociskowy Bill,ПУля Билл,,,ＢＵＬＬＥＴ ＢＩＬＬ,Bala Bill,Kugelwilli,Mermi Bill,Peluru Bill,Bill Bala,キラー
@@ -434,6 +435,7 @@ ENEMY_WRENCH,,Rocky Wrench,Torti-Taupe,Rocky Wrench,pokи-kлюч,,,ＲＯＣＫ
 ENEMY_BARREL,,Barrel,Tonneau,Beczka,Бoчka,,,ＢＡＲＲＥＬ,Bariles,Fass,Varİl,Barel,Barril,タル
 ,,,Greg,Hog Rider is a 4 elixir rare card found in,,,,,,,,,,
 BLOCK_MYSTERY,? Block,? Block,Bloc ?,Blok ?,Блok ?,,,? ＢＬＯＣＫ,? Bloke,?-Block,? Bloğu,? Blok,Bloco ?,アイテムボックス
+BLOCK_BURST,,! Block,,,,,,,,,,,,
 BLOCK_BRICK,,Brick Block,Brique,Cegły,Блok,,,ＢＲＩＣＫ ＢＬＯＣＫ,Landrilyo,Ziegelblock,Tuğla Bloğu,Bata Blok,Bloco de Tijolo,レンガ
 BLOCK_TURN,The spinning blocks from SMW,Turn Block,Bloc tournant,Obracany Blok,Пobopaчиbaющий блok,,,ＴＵＲＮ ＢＬＯＣＫ,Umiikot na Bloke,Rotierender Block,Dönen Blok,Putar Blok,Bloco Rotativo,クルクルブロック
 BLOCK_INVISIBLE,,Invisible ? Block,Bloc Secret,Niewidzialny Blok ?,ckpыtый блok,,,ＩＮＶＩＳＩＢＬＥ ? ＢＬＯＣＫ,Di nakikitang ? Bloke,Unsichtbarer ?-Block,Görünmez ? Bloğu,Tak Terlihat ? Blok,Bloco ? Invisível,とうめいブロック
@@ -459,6 +461,7 @@ BLOCK_MUSIC,,Music Block,Bloc Musicale,Blok Muzyczny,mУзыkaльhый Блok,,
 BLOCK_FAN,,Fan,Ventillateur,Wiatrak,behtиляtop,,,ＦＡＮ,,Ventilator,Vantİlatör,Kipas,Ventilador,せんぷうき
 BLOCK_DONUT,,Donut Block,Bloc beignet,Pączkowy Blok,Блok-бУблиk,,,ＤＯＮＵＴ ＢＬＯＣＫ,Blokeng Donut,Donutblock,Donut Bloğu,Blok Donat,Bloco Rosquinha,ちくわブロック
 OBJ_FIREBAR,,Fire Bar,Barre de feu,Płomień Ogni,oгhehhoe пpeпяtctbиe,,,ＦＩＲＥ ＢＡＲ,Lumilingas na Bareta,Feuerbalken,Ateş Çubuğu,Bar Api,Barra de Fogo,ファイアバー
+OBJ_FIREWORK,,Firework,,,,,,,,,,,,
 OBJ_BURNER,,Burner,Bill Flamme,Spalacz,oгhemёt,,,ＢＵＲＮＥＲ,,Brenner,Brülör,Pembakar,Bico de Fogo,バーナー
 OBJ_PSWITCH,,P-Switch,Interrupteur P,P-Przełącznik,Пepekлючateль P,,,Ｐ-ＳＷＩＴＣＨ,P-Switch,P-Schalter,P-Anahtarı,Sakelar-P,Interruptor P,Pスイッチ
 OBJ_CHECKPOINTFLAG,,Checkpoint Flag,Drapeau relais,Flaga Checkpoint,kohtpoльhый флaг,,,ＣＨＥＣＫＰＯＩＮＴ ＦＬＡＧ,Checkpoint Flag,Checkpointflagge,Kontrol Noktası Bayrağı,Bendera Pos Pemeriksaan,Bandeira de Checkpoint,ちゅうかんポイント
@@ -568,6 +571,7 @@ LEVEL_SETTINGS_CAMPAIGN,,Campaign:,Campagne :,Kampania,kamпahия,,,ＣＡＭ�
 LEVEL_SETTINGS_BACKSCROLL,,Backscroll:,Retour Arrière :,Przewijanie Tylne,ПpokpУtka haзaд,,,ＢＡＣＫＳＣＲＯＬＬ:,Backscroll,Rückwärtsscroll,Gerİ Kayma,Scroll Kembali:,Rolagem Para Trás,スクロールかいじょ
 LEVEL_SETTINGS_HEIGHT,,Height Limit:,Limite Hauteur :,Limit Wysokości,Лиmиt bыcotы,,,ＨＥＩＧＨＴ ＬＩＭＩＴ:,Limit ng taas,Höhenlimit,Yükseklİk Lİmİtİ,Batas Ketinggian:,Limite de Altura,たかさサイズ
 LEVEL_SETTINGS_TIMELIMIT,,Time Limit:,Chrono:,Limit Czasu,bpemя,,,ＴＩＭＥ ＬＩＭＩＴ:,Limit ng oras,Zeitlimit,Zaman Lİmİtİ,Batas waktu:,Tempo Limite,タイマー
+BLOCK_BURST,,Infinite Time,,,,,,,,,,,,
 LEVEL_SETTINGS_ROOM,,Current Room:,Pièce :,Pokój,komhata,,,ＣＵＲＲＥＮＴ ＲＯＯＭ:,Kwarto,Raum,Oda,Ruang:,Sala,マップ
 ,,,This is gonna be hell for localization,,,,,,,,,,,
 TITLE_SMB1_CLEAR,,Your princess is in this castle!,La Princesse est dans ce château !,Twoja księżniczka jest w tym zamku!,Пpиhцecca b эtom зamke!,¡Tu princesa está en este castillo!,La tua principessa è nel castello!,ＹＯＵＲ ＰＲＩＮＣＥＳＳ ＩＳ ＩＮ ＴＨＩＳ ＣＡＳＴＬＥ!,Dito na siya sa palasyo,Die Prinzessin ist in diesem Schloss!,Prensesİnİz bu kalede!,Putri Anda ada di kastil ini!,Sua princesa está neste castelo!,みつけた！

@@ -276,7 +276,8 @@ func tally_time() -> void:
 		return
 	$ScoreTally.play()
 	tallying_score = true
-	var target_score = score + (time * 50)
+	var time2 = max(time, 0)
+	var target_score = score + (time2 * 50)
 	score_tween = create_tween()
 	time_tween = create_tween()
 	var duration = float(time) / 120

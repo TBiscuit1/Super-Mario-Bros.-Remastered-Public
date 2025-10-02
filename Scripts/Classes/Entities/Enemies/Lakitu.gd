@@ -23,6 +23,7 @@ var can_enter := false
 static var spiny_amount := 0
 @export var item: PackedScene = null
 @export var retreat_x := 3072
+@export_range(1, 99) var max_spawn = 3
 
 func _ready() -> void:
 	can_enter = false
@@ -47,6 +48,7 @@ func handle_movement(_delta: float) -> void:
 		velocity.x = int(clamp((distance - 16) * 2, 48, INF))
 	else:
 		velocity.x = -48
+	velocity.y = int(lerp(float(velocity.y), 0.0, 0.1))
 	$Cloud.scale.x = direction
 	move_and_slide()
 
@@ -66,7 +68,7 @@ func summon_cloud_particle() -> void:
 	add_sibling(node)
 
 func on_timeout() -> void:
-	if spiny_amount >= 3 or retreat or $WallCheck.is_colliding():
+	if spiny_amount >= max_spawn or retreat or $WallCheck.is_colliding():
 		return
 	$Cloud/Sprite.play("Throw")
 	await get_tree().create_timer(0.5, false).timeout
@@ -79,13 +81,16 @@ func throw_spiny() -> void:
 	spiny_amount += 1
 	node.set("in_egg", true)
 	node.global_position = $Cloud/Sprite.global_position
-	node.velocity = Vector2(0, -150)
-	if fixed_throw:
-		node.velocity.x = 50 * (sign(player.global_position.x - global_position.x))
-	node.set("direction", sign(node.velocity.x))
+	if ("velocity" in node):
+		node.velocity = Vector2(0, -150)
+		if fixed_throw:
+			node.velocity.x = 50 * (sign(player.global_position.x - global_position.x))
+		node.set("direction", sign(node.velocity.x))
 	add_sibling(node)
 	if Settings.file.audio.extra_sfx == 1:
 		AudioManager.play_sfx("lakitu_throw", global_position)
+	if ("item" in node):
+		node.item = item
 	node.tree_exited.connect(func(): spiny_amount -= 1)
 
 func on_screen_entered() -> void:
@@ -93,5 +98,5 @@ func on_screen_entered() -> void:
 		if Global.level_editor.playing_level == false:
 			return
 	add_to_group("Lakitus")
-	if get_tree().get_node_count_in_group("Lakitus") >= 2:
+	if get_tree().get_node_count_in_group("Lakitus") >= INF:
 		queue_free()

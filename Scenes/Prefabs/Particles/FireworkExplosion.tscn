@@ -1,29 +1,28 @@
-[gd_scene load_steps=12 format=3 uid="uid://r7wy30fay4nx"]
+[gd_scene load_steps=11 format=3 uid="uid://bakx8tsba0vlo"]
 
-[ext_resource type="Texture2D" uid="uid://brjkrkihadwnj" path="res://Assets/Sprites/Particles/FireballExplosion.png" id="1_kdk5b"]
-[ext_resource type="JSON" path="res://Assets/Sprites/Particles/Firework.json" id="2_r062j"]
-[ext_resource type="Script" uid="uid://7fm78nwojjni" path="res://Scripts/Classes/Entities/Objects/Firework.gd" id="2_vdysq"]
-[ext_resource type="Script" uid="uid://cbal8ms2oe1ik" path="res://Scripts/Classes/Components/ResourceSetterNew.gd" id="3_hnidi"]
-[ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="3_r062j"]
+[ext_resource type="Texture2D" uid="uid://brjkrkihadwnj" path="res://Assets/Sprites/Particles/FireballExplosion.png" id="1_ejlye"]
+[ext_resource type="Script" uid="uid://buu4udnbei865" path="res://Scripts/Classes/Entities/Objects/FireballExplosion.gd" id="2_fsoum"]
+[ext_resource type="Script" uid="uid://cbal8ms2oe1ik" path="res://Scripts/Classes/Components/ResourceSetterNew.gd" id="3_4tgwv"]
+[ext_resource type="JSON" path="res://Assets/Sprites/Particles/FireballExplosion.json" id="4_naeuj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uh5i8"]
-atlas = ExtResource("1_kdk5b")
+atlas = ExtResource("1_ejlye")
 region = Rect2(0, 0, 18, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5vou3"]
-atlas = ExtResource("1_kdk5b")
+atlas = ExtResource("1_ejlye")
 region = Rect2(18, 0, 18, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_unul6"]
-atlas = ExtResource("1_kdk5b")
+atlas = ExtResource("1_ejlye")
 region = Rect2(36, 0, 18, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u8mnd"]
-atlas = ExtResource("1_kdk5b")
+atlas = ExtResource("1_ejlye")
 region = Rect2(54, 0, 18, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_62o2b"]
-atlas = ExtResource("1_kdk5b")
+atlas = ExtResource("1_ejlye")
 region = Rect2(0, 0, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cu1uy"]
@@ -49,27 +48,22 @@ animations = [{
 "speed": 30.0
 }]
 
-[node name="Firework" type="AnimatedSprite2D"]
+[node name="FireworkExplosion" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_cu1uy")
 autoplay = "default"
 frame = 4
 frame_progress = 1.0
-speed_scale = 0.0
-script = ExtResource("2_vdysq")
+script = ExtResource("2_fsoum")
 metadata/_custom_type_script = "uid://caq1qiwmy0mox"
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.2
+autostart = true
 
 [node name="ResourceSetter" type="Node" parent="." node_paths=PackedStringArray("node_to_affect")]
-script = ExtResource("3_hnidi")
+script = ExtResource("3_4tgwv")
 node_to_affect = NodePath("..")
 property_name = "sprite_frames"
-resource_json = ExtResource("2_r062j")
+resource_json = ExtResource("4_naeuj")
 metadata/_custom_type_script = "uid://cbal8ms2oe1ik"
-
-[node name="EditorPropertyExposer" type="Node" parent="."]
-script = ExtResource("3_r062j")
-properties = Array[String](["score", "fly_tile"])
 
 [connection signal="timeout" from="Timer" to="." method="queue_free"]

@@ -21,7 +21,7 @@ func collected() -> void:
 	if already_collected:
 		AudioManager.play_sfx("coin", global_position, 2)
 	else:
-		AudioManager.play_sfx(COLLECTION_SFXS[ChallengeModeHandler.red_coins], global_position)
+		AudioManager.play_sfx(COLLECTION_SFXS[min(ChallengeModeHandler.red_coins, 5)], global_position)
 		ChallengeModeHandler.red_coins += 1
 	Global.score += 200
 	ChallengeModeHandler.set_value(id, true)

@@ -43,7 +43,7 @@ func player_touch(player: Player) -> void:
 		AudioManager.set_music_override(AudioManager.MUSIC_OVERRIDES.LEVEL_COMPLETE, 99, false)
 	Global.level_complete_begin.emit()
 	await get_tree().create_timer(1, false).timeout
-	if [Global.GameMode.BOO_RACE].has(Global.current_game_mode) == false:
+	if [Global.GameMode.BOO_RACE].has(Global.current_game_mode) == false && Global.current_level.infinite_time == false:
 		Global.tally_time()
 
 func give_points(player: Player) -> void:

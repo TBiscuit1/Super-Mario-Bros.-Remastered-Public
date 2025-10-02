@@ -106,11 +106,9 @@ func show_fireworks(amount := 0) -> void:
 
 func spawn_firework() -> void:
 	var node = FIREWORK.instantiate()
-	Global.score += 500
 	node.position.x = randf_range(-48, 48)
 	node.position.y = randf_range(-112, -150)
 	add_child(node)
-	AudioManager.play_sfx("firework", node.global_position)
 
 
 func exit_level() -> void:

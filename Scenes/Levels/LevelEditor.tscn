@@ -1,4 +1,4 @@
-[gd_scene load_steps=297 format=3 uid="uid://gbcmqonky63j"]
+[gd_scene load_steps=303 format=3 uid="uid://gbcmqonky63j"]
 
 [ext_resource type="Script" uid="uid://c2lnc7vnq3xth" path="res://Scripts/Classes/Editor/LevelEditor.gd" id="1_0qbyu"]
 [ext_resource type="PackedScene" uid="uid://bksxgpygrdjl7" path="res://Scenes/Prefabs/LevelBG.tscn" id="1_ujeu4"]
@@ -86,7 +86,9 @@
 [ext_resource type="PackedScene" uid="uid://coasuq2vsmlce" path="res://Scenes/Prefabs/Entities/Enemies/BooBuddies.tscn" id="57_miwak"]
 [ext_resource type="PackedScene" uid="uid://bxsay5e6dhcqb" path="res://Scenes/Prefabs/Entities/Enemies/DryBones.tscn" id="58_j12pl"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/DryBones.json" id="58_u38n8"]
+[ext_resource type="JSON" path="res://Assets/Sprites/Enemies/BowsersBro.json" id="59_kxvns"]
 [ext_resource type="PackedScene" uid="uid://iq86u4w60yee" path="res://Scenes/Prefabs/Entities/Objects/Firebar.tscn" id="60_01msc"]
+[ext_resource type="PackedScene" uid="uid://bjysym6bhxljv" path="res://Scenes/Prefabs/Entities/Enemies/BowsersBro.tscn" id="60_ed30e"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/MontyMole.json" id="60_vt1yk"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Items/PoisonMushroom.json" id="61_8hw1j"]
 [ext_resource type="PackedScene" uid="uid://bym2j03wxhk3t" path="res://Scenes/Prefabs/Entities/Enemies/MontyMole.tscn" id="61_looxg"]
@@ -152,6 +154,8 @@
 [ext_resource type="Texture2D" uid="uid://boj5qawy6b6t2" path="res://Assets/Sprites/Editor/SmallCastle.png" id="96_lm8lu"]
 [ext_resource type="PackedScene" uid="uid://bney0cc8cfm5s" path="res://Scenes/Prefabs/LevelObjects/EndFinalCastle.tscn" id="97_d32e2"]
 [ext_resource type="Texture2D" uid="uid://m86epuy45c3u" path="res://Assets/Sprites/Editor/LargeCastle.png" id="98_2umvb"]
+[ext_resource type="JSON" path="res://Assets/Sprites/Blocks/ExclamationBlock.json" id="99_qomnr"]
+[ext_resource type="PackedScene" uid="uid://cmxypvqnualtx" path="res://Scenes/Prefabs/Blocks/QuestionBlocks/ExclamationBlock.tscn" id="100_4cny5"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/Barrel.json" id="102_6c7k7"]
 [ext_resource type="PackedScene" uid="uid://byu7xm153ktle" path="res://Scenes/Prefabs/Entities/Enemies/Barrel.tscn" id="103_k6wox"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Blocks/OnOffSwitch.json" id="103_mbniv"]
@@ -202,6 +206,8 @@
 [ext_resource type="PackedScene" uid="uid://dvmr3r2uub283" path="res://Scenes/Prefabs/Entities/Objects/TrackRider.tscn" id="144_m7msd"]
 [ext_resource type="Texture2D" uid="uid://cgtrhqpe20qbx" path="res://Assets/Sprites/Editor/TextLabel.png" id="145_gf7vd"]
 [ext_resource type="PackedScene" uid="uid://bri8d364obssw" path="res://Scenes/Prefabs/LevelObjects/TextLabelObj.tscn" id="146_gf7vd"]
+[ext_resource type="PackedScene" uid="uid://r7wy30fay4nx" path="res://Scenes/Prefabs/Particles/Firework.tscn" id="149_q3e2o"]
+[ext_resource type="Texture2D" uid="uid://cnsbfwwsmk0fr" path="res://Assets/Sprites/Editor/Firework.png" id="151_4cny5"]
 [ext_resource type="PackedScene" uid="uid://t5vu4gl0ra8x" path="res://Scenes/Prefabs/Entities/Objects/OnOffVerticalPlatform.tscn" id="154_dp0ao"]
 [ext_resource type="Texture2D" uid="uid://dfpbjnd1o5tig" path="res://Assets/Sprites/Tilesets/OnOffPlatform.png" id="155_i2jbr"]
 [ext_resource type="PackedScene" uid="uid://ry4jg3jyxnvy" path="res://Scenes/Prefabs/Entities/Objects/OnOffVerticalPlatformBlue.tscn" id="156_i2jbr"]
@@ -3009,8 +3015,16 @@ metadata/can_note_store = false
 metadata/can_lakitu_throw = false
 metadata/can_pipe_gen = false
 
-[node name="Bowser" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
+[node name="Bowser" type="Control" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+mouse_force_pass_scroll_events = false
+script = ExtResource("20_jc7xg")
+
+[node name="Bowser" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Bowser" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
 tile_name = "ENEMY_BOWSER"
 type = 1
 icon_texture = ExtResource("40_62ull")
@@ -3020,6 +3034,32 @@ metadata/can_be_stored = false
 metadata/can_note_store = false
 metadata/can_lakitu_throw = false
 metadata/can_pipe_gen = false
+
+[node name="BowsersBro" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Bowser" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+tile_name = "ENEMY_BOWSERS_BRO"
+type = 1
+icon_texture = ExtResource("59_kxvns")
+icon_region_override = Rect2(8, 16, 16, 16)
+entity_scene = ExtResource("60_ed30e")
+metadata/can_be_stored = false
+metadata/can_note_store = false
+metadata/can_lakitu_throw = false
+metadata/can_pipe_gen = false
+
+[node name="TextureRect" type="TextureRect" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Bowser"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("22_3cjpb")
+expand_mode = 1
+stretch_mode = 3
 
 [node name="Pokey" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 2
@@ -3038,6 +3078,8 @@ icon_texture = ExtResource("44_h5kf7")
 icon_region_override = Rect2(0, 0, 16, 16)
 entity_scene = ExtResource("45_my64r")
 tile_offset = Vector2i(0, 0)
+metadata/can_be_stored = true
+metadata/can_lakitu_throw = true
 
 [node name="BulletBill" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 2
@@ -3055,6 +3097,7 @@ icon_texture = ExtResource("50_6q8wo")
 icon_region_override = Rect2(0, 0, 16, 16)
 entity_scene = ExtResource("51_mlt27")
 tile_offset = Vector2i(0, 0)
+metadata/can_be_stored = true
 
 [node name="Boos" type="Control" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer"]
 custom_minimum_size = Vector2(16, 16)
@@ -3302,6 +3345,16 @@ entity_scene = ExtResource("29_ojsda")
 tile_offset = Vector2i(0, 0)
 metadata/_edit_group_ = true
 
+[node name="ExclamationBlock" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
+layout_mode = 2
+tile_name = "BLOCK_BURST"
+type = 1
+icon_texture = ExtResource("99_qomnr")
+icon_region_override = Rect2(0, 0, 16, 16)
+entity_scene = ExtResource("100_4cny5")
+tile_offset = Vector2i(0, 0)
+metadata/_edit_group_ = true
+
 [node name="BrickBlock" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 2
 tile_name = "BLOCK_BRICK"
@@ -3328,6 +3381,7 @@ type = 1
 icon_texture = SubResource("AtlasTexture_5ujs8")
 entity_scene = ExtResource("53_5kjov")
 tile_offset = Vector2i(0, 0)
+metadata/can_lakitu_throw = true
 
 [node name="Trampolines" type="Control" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer"]
 custom_minimum_size = Vector2(16, 16)
@@ -3748,6 +3802,18 @@ type = 1
 icon_texture = ExtResource("80_gixmk")
 entity_scene = ExtResource("60_01msc")
 tile_offset = Vector2i(0, 0)
+metadata/can_lakitu_throw = true
+metadata/can_be_stored = true
+
+[node name="Firework" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Objects/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
+layout_mode = 2
+tile_name = "OBJ_FIREWORK"
+type = 1
+icon_texture = ExtResource("151_4cny5")
+entity_scene = ExtResource("149_q3e2o")
+tile_offset = Vector2i(0, 0)
+metadata/can_lakitu_throw = true
+metadata/can_be_stored = true
 
 [node name="PSwitch" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Objects/MarginContainer/GridContainer" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 2
@@ -3800,6 +3866,7 @@ icon_texture = ExtResource("94_t6g4q")
 icon_region_override = Rect2(0, 0, 16, 16)
 entity_scene = ExtResource("95_5avr6")
 tile_offset = Vector2i(0, 24)
+metadata/can_lakitu_throw = true
 
 [node name="EndCastle" type="Control" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Objects/MarginContainer/GridContainer"]
 custom_minimum_size = Vector2(16, 16)
@@ -4227,6 +4294,7 @@ icon_texture = ExtResource("167_cmcm2")
 icon_region_override = Rect2(0, 0, 16, 16)
 entity_scene = ExtResource("168_yjk03")
 tile_offset = Vector2i(0, 0)
+metadata/can_be_stored = false
 
 [node name="CheepCheep" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Objects/MarginContainer/GridContainer/Generators" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 0
@@ -4238,6 +4306,7 @@ icon_texture = ExtResource("169_2vwpv")
 icon_region_override = Rect2(0, 0, 16, 16)
 entity_scene = ExtResource("170_sf60c")
 tile_offset = Vector2i(0, 0)
+metadata/can_be_stored = true
 
 [node name="Flame" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Objects/MarginContainer/GridContainer/Generators" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 0
@@ -4260,6 +4329,7 @@ icon_texture = ExtResource("173_6c7k7")
 icon_region_override = Rect2(0, 0, 16, 16)
 entity_scene = ExtResource("174_k6wox")
 tile_offset = Vector2i(0, 0)
+metadata/can_be_stored = true
 
 [node name="GravityFlipper" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Objects/MarginContainer/GridContainer/Generators" groups=["Selectors"] instance=ExtResource("8_wkmjk")]
 layout_mode = 0
@@ -4757,7 +4827,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 min_value = 208.0
-max_value = 480.0
+max_value = 3840.0
 value = 208.0
 suffix = "PX"
 script = ExtResource("204_idval")
@@ -4779,6 +4849,20 @@ min_value = 10.0
 max_value = 999.0
 value = 400.0
 script = ExtResource("204_idval")
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="InfiniteTimeLabel" type="Label" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LEVEL_SETTINGS_INFINITETIME"
+uppercase = true
+
+[node name="InfiniteTime" type="CheckBox" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
 
 [node name="BG" type="MarginContainer" parent="TileMenu/MarginContainer/VBoxContainer/PanelContainer"]
 visible = false
@@ -5307,7 +5391,8 @@ metadata/_custom_type_script = "uid://dt2p68xl462v2"
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/CheepCheeps/RedCheepCheep" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Blooper" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/HammerBro" to="." method="on_tile_selected"]
-[connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Bowser" to="." method="on_tile_selected"]
+[connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Bowser/Bowser" to="." method="on_tile_selected"]
+[connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Bowser/BowsersBro" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Pokey" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/BulletBill" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Boos/Boo" to="." method="on_tile_selected"]
@@ -5325,6 +5410,7 @@ metadata/_custom_type_script = "uid://dt2p68xl462v2"
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/Barrel" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Enemies/MarginContainer/GridContainer/RockyWrench" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer/QuestionBlock" to="." method="on_tile_selected"]
+[connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer/ExclamationBlock" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer/BrickBlock" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer/TurnBlock" to="." method="on_tile_selected"]
 [connection signal="tile_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/TILES/ScrollContainer/VBoxContainer/Blocks/MarginContainer/GridContainer/SpikeBlock" to="." method="on_tile_selected"]
@@ -5343,6 +5429,7 @@ metadata/_custom_type_script = "uid://dt2p68xl462v2"
 [connection signal="toggled" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer/HBoxContainer3/BackScroll" to="." method="backscroll_toggled"]
 [connection signal="value_changed" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer/HBoxContainer4/HeightLimit" to="." method="height_limit_changed"]
 [connection signal="value_changed" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer/HBoxContainer6/TimeLimit" to="." method="time_limit_changed"]
+[connection signal="toggled" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/LEVEL/ScrollContainer/VBoxContainer/HBoxContainer9/InfiniteTime" to="." method="infinitetime_toggled"]
 [connection signal="item_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/BG/ScrollContainer/VBoxContainer/HBoxContainer/PrimaryLayer" to="Level/LevelBG" method="set_value" binds= ["primary_layer"]]
 [connection signal="item_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/BG/ScrollContainer/VBoxContainer/HBoxContainer2/SecondLayer" to="Level/LevelBG" method="set_value" binds= ["second_layer"]]
 [connection signal="item_selected" from="TileMenu/MarginContainer/VBoxContainer/PanelContainer/BG/ScrollContainer/VBoxContainer/HBoxContainer7/SecondLayerOrder" to="Level/LevelBG" method="set_value" binds= ["second_layer_order"]]

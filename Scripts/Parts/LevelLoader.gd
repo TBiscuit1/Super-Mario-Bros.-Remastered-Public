@@ -38,6 +38,7 @@ func load_entity_map() -> void:
 func build_level() -> void:
 	if sub_level_file.is_empty():
 		return
+	apply_expanded_data(sub_level_file.get_or_add("ExData", ""))
 	var layer_id := 0
 	for layer in sub_level_file["Layers"]:
 		for chunk_id in layer:
@@ -53,10 +54,18 @@ func add_tiles(chunk := "", chunk_id := 0, layer := 0) -> void:
 		var tile_position := Vector2i.ZERO
 		var tile_atlas_position := Vector2i.ZERO
 		var source_id := 0
-		
-		tile_position = decode_tile_position_from_chars(tile[0], tile[1], chunk_id)
-		source_id = base64_charset.find(tile[4])
-		tile_atlas_position = Vector2i(base64_charset.find(tile[2]), base64_charset.find(tile[3]))
+		var offset = 0
+		if (level.is_expanded == false):
+			offset = 2
+			tile_position = decode_tile_position_from_chars(tile[0], tile[1], chunk_id)
+		elif (level.expanded_chunks == true):
+			offset = 3
+			tile_position = decode_expanded_tile_position_from_chars(tile[0], tile[1] + tile[2], chunk_id)
+		else:
+			offset = 2
+			tile_position = decode_ex_tile_position_from_chars(tile[0], tile[1], chunk_id)
+		source_id = base64_charset.find(tile[offset + 2])
+		tile_atlas_position = Vector2i(base64_charset.find(tile[offset + 0]), base64_charset.find(tile[offset + 1]))
 		editor.tile_layer_nodes[layer].set_cell(tile_position, source_id, tile_atlas_position)
 
 func add_entities(chunk := "", chunk_id := 0, layer := 0) -> void:
@@ -129,6 +138,29 @@ func apply_level_data(data := "") -> void:
 	ResourceSetterNew.cache.clear()
 	Global.level_theme_changed.emit()
 
+func apply_expanded_data(data := "") -> void:
+	var split = data.split("=")
+	var values := []
+	for i in split:
+		if i.length() == 2:
+			values.append(decode_from_base64_2char(i))
+		elif i.length() == 1:
+			values.append(base64_charset.find(i))
+		else:
+			values.append(i)
+	if (data == ""):
+		level.is_expanded = false
+	var size = values.size()
+	match size:
+		1:
+			values = [0, 0, null]
+		2:
+			values = [values[0], 0, null]
+	level.expanded_chunks = bool(values[0])
+	level.infinite_time = bool(values[1])
+	if is_instance_valid($TileMenu):
+		%InfiniteTime.selected = values[1]
+
 func apply_bg_data(data := "") -> void:
 	var split = data.split("=", false)
 	var id := 0
@@ -158,6 +190,22 @@ func decode_tile_position_from_chars(char_x: String, char_y: String, chunk_idx: 
 	var local_y = base64_charset.find(char_y)
 
 	return Vector2i(local_x + (chunk_idx * 32), local_y - 30)
+
+func decode_ex_tile_position_from_chars(char_x: String, char_y: String, chunk_idx: int) -> Vector2i:
+	
+	var local_x = base64_charset.find(char_x)
+	var local_y = base64_charset.find(char_y)
+
+	return Vector2i(local_x + (chunk_idx * 32), local_y - 62)
+
+func decode_expanded_tile_position_from_chars(char_x: String, char_y: String, chunk_idx: int) -> Vector2i:
+	
+	var local_x = base64_charset.find(char_x)
+	var local_y = decode_from_base64_2char(char_y)
+	print(char_y)
+	print(local_y)
+	print(Vector2i(local_x + (chunk_idx * 32), local_y - 638))
+	return Vector2i(local_x + (chunk_idx * 32), local_y - 638)
 
 func decode_from_base64_2char(encoded: String) -> int:
 	if encoded.length() != 2:

@@ -19,7 +19,11 @@ const SUPER_MUSHROOM = ("res://Scenes/Prefabs/Entities/Items/SuperMushroom.tscn"
 var can_hit := true
 var bouncing := false
 
-const NO_SFX_ITEMS := ["res://Scenes/Prefabs/Entities/Items/SpinningRedCoin.tscn","res://Scenes/Prefabs/Entities/Items/SpinningCoin.tscn", "res://Scenes/Prefabs/Entities/Items/Vine.tscn" ]
+const NO_SFX_ITEMS := [
+	"res://Scenes/Prefabs/Entities/Items/SpinningRedCoin.tscn",
+	"res://Scenes/Prefabs/Entities/Items/SpinningCoin.tscn",
+	"res://Scenes/Prefabs/Entities/Items/Vine.tscn"
+]
 
 @export var start_z := -1
 signal item_changed
@@ -65,7 +69,10 @@ func dispense_item() -> void:
 		print("FUCK: " + str(item.resource_path))
 		if NO_SFX_ITEMS.has(item.resource_path) == false:
 			AudioManager.play_sfx("item_appear", global_position)
-			node.set("velocity", Vector2(0, node.get_meta("block_launch_velocity", -150)))
+			if (item.resource_path != "res://Scenes/Prefabs/Particles/Firework.tscn"):
+				node.set("velocity", Vector2(0, node.get_meta("block_launch_velocity", -150)))
+			else:
+				node.fly_tile = randi_range(3, 5)
 	can_hit = true
 	item_amount -= 1
 	if item_amount == 1:

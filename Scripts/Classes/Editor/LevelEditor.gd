@@ -249,10 +249,13 @@ func cleanup() -> void:
 	KeyItem.total_collected = 0
 	Global.get_node("GameHUD").visible = playing_level
 	Global.p_switch_active = false
+	var time = $Level.time_limit
+	if ($Level.infinite_time):
+		time = -1
 	if Global.current_game_mode == Global.GameMode.LEVEL_EDITOR:
-		Global.time = $Level.time_limit
+		Global.time = time
 	elif Level.can_set_time and playing_level:
-		Global.time = $Level.time_limit
+		Global.time = time
 	Global.can_time_tick = playing_level
 	print(Global.can_time_tick)
 
@@ -373,7 +376,7 @@ func handle_tile_cursor() -> void:
 	%TileCursor.global_position = (snapped_position)
 	var old_index := selected_tile_index
 	var tile_position = global_position_to_tile_position(snapped_position + Vector2(-8, -8))
-	tile_position.y = clamp(tile_position.y, -30, 1)
+	tile_position.y = clamp(tile_position.y, -INF, 1)
 	tile_position.x = clamp(tile_position.x, -16, INF)
 	cursor_tile_position = tile_position
 
@@ -641,8 +644,15 @@ func campaign_selected(campaign_idx := 0) -> void:
 func backscroll_toggled(new_value := false) -> void:
 	$Level.can_backscroll = new_value
 
+func infinitetime_toggled(new_value := false) -> void:
+	$Level.infinite_time = new_value
+
 func height_limit_changed(new_value := 0) -> void:
+	$Level.expanded_chunks = new_value > 960
 	$Level.vertical_height = -new_value
+
+func is_expanded_level() -> bool:
+	return $Level.expanded_chunks
 
 func time_limit_changed(new_value := 0) -> void:
 	$Level.time_limit = new_value

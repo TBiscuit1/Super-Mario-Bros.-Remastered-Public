@@ -1,6 +1,6 @@
 extends Node2D
 
-var velocity := 5.0
+var velocity := Vector2(0.0, 5.0)
 
 var play_sfx := false
 
@@ -17,15 +17,18 @@ func _ready() -> void:
 		Global.log_warning("Podoboo is too low! Forgot to update!")
 
 func _physics_process(delta: float) -> void:
-	velocity += (5 / delta) * delta
-	velocity = clamp(velocity, -INF, 280)
-	global_position.y += velocity * delta
+	velocity.y += (5 / delta) * delta
+	velocity.y = clamp(velocity.y, -INF, 280)
+	global_position.y += velocity.y * delta
 	global_position.y = clamp(global_position.y, -INF, BASE_LINE)
-	if global_position.y >= BASE_LINE and can_jump:
-		can_jump = false
-		do_jump()
+	if global_position.y >= BASE_LINE:
+		if (can_jump):
+			can_jump = false
+			do_jump()
+	else:
+		global_position.x += velocity.x * delta
 		
-	$Sprite.flip_v = velocity > 0
+	$Sprite.flip_v = velocity.y > 0
 
 func do_jump() -> void:
 	if jump_delay > 0:
@@ -33,7 +36,8 @@ func do_jump() -> void:
 		await $Timer.timeout
 	if play_sfx:
 		AudioManager.play_sfx("podoboo", global_position)
-	velocity = calculate_jump_height()
+	velocity.y = calculate_jump_height()
+	velocity.x = -velocity.x
 	print(velocity)
 	await get_tree().physics_frame
 	can_jump = true

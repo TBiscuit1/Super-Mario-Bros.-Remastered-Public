@@ -153,7 +153,7 @@ metadata/_custom_type_script = "uid://cqif1li7otvpl"
 
 [node name="EditorPropertyExposer" type="Node" parent="."]
 script = ExtResource("14_v233d")
-properties = Array[String](["item"])
+properties = Array[String](["item", "max_spawn"])
 filters = Dictionary[String, String]({
 "item": "can_lakitu_throw"
 })

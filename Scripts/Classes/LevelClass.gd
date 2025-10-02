@@ -63,6 +63,11 @@ const SMBS_THEMES := {
 @export var vertical_height := -208
 @export var can_backscroll := false
 
+# Expanded
+@export var is_expanded := true
+@export var expanded_chunks := false
+@export var infinite_time := false
+
 static var next_world := 1
 static var next_level := 2
 static var next_level_file_path := ""
@@ -82,7 +87,10 @@ func _enter_tree() -> void:
 	SpeedrunHandler.ghost_active = true
 	if can_set_time:
 		can_set_time = false
-		Global.time = time_limit
+		if (infinite_time):
+			Global.time = -1
+		else:
+			Global.time = time_limit
 	if first_load:
 		start_level_path = scene_file_path
 		Global.can_time_tick = true

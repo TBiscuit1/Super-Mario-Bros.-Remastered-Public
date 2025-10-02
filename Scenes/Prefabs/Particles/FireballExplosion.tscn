@@ -54,7 +54,6 @@ autoplay = "default"
 frame = 4
 frame_progress = 1.0
 script = ExtResource("2_unul6")
-do_offset = false
 metadata/_custom_type_script = "uid://caq1qiwmy0mox"
 
 [node name="Timer" type="Timer" parent="."]

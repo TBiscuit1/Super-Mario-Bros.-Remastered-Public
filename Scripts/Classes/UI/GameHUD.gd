@@ -49,7 +49,7 @@ func handle_main_hud() -> void:
 	%LevelNum.text = world_num + "-" + str(Global.level_num)
 	%Crown.visible = Global.second_quest
 	%Time.text = " " + str(Global.time).pad_zeros(3)
-	if Settings.file.difficulty.time_limit == 0:
+	if Settings.file.difficulty.time_limit == 0 or Global.time < 0:
 		%Time.text = " ---"
 	%Time.visible = get_tree().get_first_node_in_group("Players") != null
 	handle_modern_hud()
@@ -76,7 +76,7 @@ func handle_modern_hud() -> void:
 	%ModernTime.text = "⏲" + str(Global.time).pad_zeros(3)
 	%ModernKeyCount.visible = KeyItem.total_collected > 0
 	%ModernKeyAmount.text = "*" + str(KeyItem.total_collected).pad_zeros(2)
-	if get_tree().get_first_node_in_group("Players") == null or Settings.file.difficulty.time_limit == 0:
+	if get_tree().get_first_node_in_group("Players") == null or Settings.file.difficulty.time_limit == 0 or Global.time < 0:
 		%ModernTime.text = "⏲---"
 
 func handle_disco_combo() -> void:
@@ -189,6 +189,7 @@ func on_timeout() -> void:
 		if Global.time == 0:
 			get_tree().call_group("Players", "time_up")
 			return
-		Global.time -= 1
+		elif Global.time > 0:
+			Global.time -= 1
 		if Global.time == 100:
 			AudioManager.set_music_override(AudioManager.MUSIC_OVERRIDES.TIME_WARNING, 5, true)

@@ -28,6 +28,7 @@ func save_level(level_name := "Unnamed Level", level_author := "You", level_desc
 	
 	save_bg_data()
 	save_level_data()
+	save_expanded_data()
 	level_file["Levels"][editor.sub_level_id] = sub_level_file.duplicate()
 	level_file["Info"] = {"Name": level_name, "Author": level_author, "Description": level_desc, "Difficulty": difficulty}
 	level_file["Version"] = Global.version_number
@@ -50,9 +51,14 @@ func get_tiles() -> void:
 			if tile_blacklist.has(editor.tile_layer_nodes[layer].get_cell_atlas_coords(tile)) or editor.tile_layer_nodes[layer].get_cell_source_id(tile) == 6:
 				continue
 			var tile_string := ""
-			var chunk_tile = Vector2i(wrap(tile.x, 0, 32), wrap(tile.y + 30, -1, 32))
-			tile_string += base64_charset[chunk_tile.x]
-			tile_string += base64_charset[chunk_tile.y]
+			if (editor.is_expanded_level()):
+				var chunk_tile = Vector2i(wrap(tile.x, 0, 32), wrap(tile.y + 638, -1, 640))
+				tile_string += base64_charset[chunk_tile.x]
+				tile_string += encode_to_base64_2char(chunk_tile.y)
+			else:
+				var chunk_tile = Vector2i(wrap(tile.x, 0, 32), wrap(tile.y + 62, -1, 64))
+				tile_string += base64_charset[chunk_tile.x]
+				tile_string += base64_charset[chunk_tile.y]
 			tile_string += ""
 			tile_string += base64_charset[editor.tile_layer_nodes[layer].get_cell_atlas_coords(tile).x]
 			tile_string += base64_charset[editor.tile_layer_nodes[layer].get_cell_atlas_coords(tile).y]
@@ -92,7 +98,7 @@ func get_entities() -> void:
 			if entity.has_meta("tile_position") == false:
 				continue
 			var entity_string := ""
-			var chunk_position = Vector2i(wrap(entity.get_meta("tile_position").x, 0, 32), wrap(entity.get_meta("tile_position").y + 30, 0, 32))
+			var chunk_position = Vector2i(wrap(entity.get_meta("tile_position").x, 0, 32), wrap(entity.get_meta("tile_position").y + 30, 0, 64))
 			entity_string += base64_charset[chunk_position.x]
 			entity_string += base64_charset[chunk_position.y]
 			entity_string += ","
@@ -131,6 +137,18 @@ func save_level_data() -> void:
 			key = base64_charset[int(i)]
 		string += key + "="
 	sub_level_file["Data"] = string
+	
+	
+func save_expanded_data() -> void:
+	var string := ""
+	for i in [level.expanded_chunks, level.infinite_time]:
+		var key := ""
+		if int(i) >= 64:
+			key = encode_to_base64_2char(int(i))
+		else:
+			key = base64_charset[int(i)]
+		string += key + "="
+	sub_level_file["ExData"] = string
 
 func save_bg_data() -> void:
 	var string := ""
