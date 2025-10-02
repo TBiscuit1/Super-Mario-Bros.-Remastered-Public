@@ -67,7 +67,11 @@ var sky_scroll_speed := -4.0
 const disco_sfx_threshold := [0.05, 0.5, 0.8]
 
 var primary_layer_size = Vector2(512, 512)
-var secondary_layer_size = Vector2(512, 512)
+var primary_layer_size_single = Vector2(512, 4096)
+var primary_layer_offset = Vector2(0, 5152)
+var primary_layer_offset_single = Vector2(0, 32)
+var secondary_layer_size = Vector2(512, 4096)
+var secondary_layer_offset = Vector2(80, 4672)
 var sky_layer_size = Vector2(512, 512)
 
 func set_second_y_offset(value := 0.0) -> void:
@@ -191,8 +195,14 @@ func update_visuals() -> void:
 	$SecondaryLayer/Mushrooms.get_node("Tint").visible = can_mushroom_tint
 	$SecondaryLayer/Trees.get_node("Tint").visible = can_tree_tint
 	
-	$PrimaryLayer.repeat_size = primary_layer_size
+	if ["Autumn", "Bonus", "Castle", "GhostHouse", "Jungle", "Underground"].has(Global.level_theme) and primary_layer == 0:
+		$PrimaryLayer.repeat_size = primary_layer_size
+		$PrimaryLayer.scroll_offset = primary_layer_offset
+	else:
+		$PrimaryLayer.repeat_size = primary_layer_size_single
+		$PrimaryLayer.scroll_offset = primary_layer_offset_single
 	$SecondaryLayer.repeat_size = secondary_layer_size
+	$SecondaryLayer.scroll_offset = secondary_layer_offset
 	$SkyLayer.repeat_size = sky_layer_size
 	
 	var tree_tint_amount = inverse_lerp(1, 0, parallax_amount)

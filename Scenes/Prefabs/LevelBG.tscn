@@ -391,7 +391,7 @@ visibility_layer = 2
 z_index = 1
 scroll_scale = Vector2(0.5, 1)
 scroll_offset = Vector2(0, 32)
-repeat_size = Vector2(512, 0)
+repeat_size = Vector2(512, 512)
 repeat_times = 4
 
 [node name="Hills" type="AnimatedSprite2D" parent="PrimaryLayer"]
@@ -554,7 +554,7 @@ visible = false
 visibility_layer = 2
 scroll_scale = Vector2(0.4, 1)
 scroll_offset = Vector2(80, 64)
-repeat_size = Vector2(512, 512)
+repeat_size = Vector2(512, 0)
 repeat_times = 4
 
 [node name="Trees" type="Sprite2D" parent="SecondaryLayer"]
@@ -690,10 +690,9 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 20.0
 initial_velocity_max = 50.0
 
-[node name="ResourceSetter" type="Node" parent="OverlayLayer/Particles/Snow" node_paths=PackedStringArray("node_to_affect")]
+[node name="ResourceSetter" type="Node" parent="OverlayLayer/Particles/Snow"]
 process_mode = 1
 script = ExtResource("10_lvidp")
-node_to_affect = NodePath("")
 property_name = "texture"
 mode = 1
 resource_json = ExtResource("25_aw4cr")
@@ -721,9 +720,8 @@ angular_velocity_min = -720.0
 angular_velocity_max = 720.0
 anim_offset_max = 1.0
 
-[node name="ResourceSetterNew" type="Node" parent="OverlayLayer/Particles/Leaves" node_paths=PackedStringArray("node_to_affect")]
+[node name="ResourceSetterNew" type="Node" parent="OverlayLayer/Particles/Leaves"]
 script = ExtResource("10_lvidp")
-node_to_affect = NodePath("")
 property_name = "texture"
 mode = 1
 resource_json = ExtResource("28_ugdi7")

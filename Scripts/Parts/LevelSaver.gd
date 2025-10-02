@@ -50,7 +50,7 @@ func get_tiles() -> void:
 			if tile_blacklist.has(editor.tile_layer_nodes[layer].get_cell_atlas_coords(tile)) or editor.tile_layer_nodes[layer].get_cell_source_id(tile) == 6:
 				continue
 			var tile_string := ""
-			var chunk_tile = Vector2i(wrap(tile.x, 0, 32), wrap(tile.y + 30, -1, 32))
+			var chunk_tile = Vector2i(wrap(tile.x, 0, 32), wrap(tile.y, 0, 32))
 			tile_string += base64_charset[chunk_tile.x]
 			tile_string += base64_charset[chunk_tile.y]
 			tile_string += ""
@@ -58,15 +58,19 @@ func get_tiles() -> void:
 			tile_string += base64_charset[editor.tile_layer_nodes[layer].get_cell_atlas_coords(tile).y]
 			tile_string += base64_charset[editor.tile_layer_nodes[layer].get_cell_source_id(tile)]
 			var tile_chunk_idx = tile_to_chunk_idx(tile)
+			var tile_chunk_idy = tile_to_chunk_idy(tile)
 			var tile_chunk := {}
-			if sub_level_file["Layers"][layer].has(tile_chunk_idx):
-				tile_chunk = sub_level_file["Layers"][layer][tile_chunk_idx]
+			if (!sub_level_file["Layers"][layer].has(tile_chunk_idx)):
+				sub_level_file["Layers"][layer][tile_chunk_idx] = {}
+			if sub_level_file["Layers"][layer][tile_chunk_idx].has(tile_chunk_idy):
+				tile_chunk = sub_level_file["Layers"][layer][tile_chunk_idx][tile_chunk_idy]
 			else:
 				tile_chunk = chunk_template.duplicate(true)
 			tile_chunk["Tiles"] += tile_string + "="
-			sub_level_file["Layers"][layer][tile_chunk_idx] = tile_chunk
+			sub_level_file["Layers"][layer][tile_chunk_idx][tile_chunk_idy] = tile_chunk
 		for i in sub_level_file["Layers"][layer]:
-			sub_level_file["Layers"][layer][i]["Tiles"] = compress_string(sub_level_file["Layers"][layer][i]["Tiles"])
+			for j in sub_level_file["Layers"][layer][i]:
+				sub_level_file["Layers"][layer][i][j]["Tiles"] = compress_string(sub_level_file["Layers"][layer][i][j]["Tiles"])
 
 
 static func compress_string(buffer := "") -> String:
@@ -92,7 +96,7 @@ func get_entities() -> void:
 			if entity.has_meta("tile_position") == false:
 				continue
 			var entity_string := ""
-			var chunk_position = Vector2i(wrap(entity.get_meta("tile_position").x, 0, 32), wrap(entity.get_meta("tile_position").y + 30, 0, 32))
+			var chunk_position = Vector2i(wrap(entity.get_meta("tile_position").x, 0, 32), wrap(entity.get_meta("tile_position").y, 0, 32))
 			entity_string += base64_charset[chunk_position.x]
 			entity_string += base64_charset[chunk_position.y]
 			entity_string += ","
@@ -101,15 +105,19 @@ func get_entities() -> void:
 			if entity.has_node("EditorPropertyExposer"):
 				entity_string += entity.get_node("EditorPropertyExposer").get_string()
 			var entity_chunk_idx = tile_to_chunk_idx(entity.get_meta("tile_position"))
+			var entity_chunk_idy = tile_to_chunk_idy(entity.get_meta("tile_position"))
 			var tile_chunk := {}
-			if sub_level_file["Layers"][layer].has(entity_chunk_idx):
-				tile_chunk = sub_level_file["Layers"][layer][entity_chunk_idx]
+			if (!sub_level_file["Layers"][layer].has(entity_chunk_idx)):
+				sub_level_file["Layers"][layer][entity_chunk_idx] = {}
+			if sub_level_file["Layers"][layer][entity_chunk_idx].has(entity_chunk_idy):
+				tile_chunk = sub_level_file["Layers"][layer][entity_chunk_idx][entity_chunk_idy]
 			else:
 				tile_chunk = chunk_template.duplicate(true)
 			tile_chunk["Entities"] += entity_string + "="
-			sub_level_file["Layers"][layer][entity_chunk_idx] = tile_chunk
+			sub_level_file["Layers"][layer][entity_chunk_idx][entity_chunk_idy] = tile_chunk
 		for i in sub_level_file["Layers"][layer]:
-			sub_level_file["Layers"][layer][i]["Entities"] = compress_string(sub_level_file["Layers"][layer][i]["Entities"])
+			for j in sub_level_file["Layers"][layer][i]:
+				sub_level_file["Layers"][layer][i][j]["Entities"] = compress_string(sub_level_file["Layers"][layer][i][j]["Entities"])
 
 func encode_to_base64_2char(value: int) -> String:
 	if value < 0 or value >= 4096:
@@ -132,6 +140,17 @@ func save_level_data() -> void:
 		string += key + "="
 	sub_level_file["Data"] = string
 
+func save_expanded_data() -> void:
+	var string := ""
+	for i in [true]:
+		var key := ""
+		if int(i) >= 64:
+			key = encode_to_base64_2char(int(i))
+		else:
+			key = base64_charset[int(i)]
+		string += key + "="
+	sub_level_file["ExData"] = string
+
 func save_bg_data() -> void:
 	var string := ""
 	for i in [level_bg.primary_layer, level_bg.second_layer, level_bg.second_layer_offset.y, level_bg.time_of_day, level_bg.particles, level_bg.liquid_layer, level_bg.overlay_clouds]:
@@ -146,3 +165,6 @@ func save_bg_data() -> void:
 
 func tile_to_chunk_idx(tile_position := Vector2i.ZERO) -> int:
 	return floor(tile_position.x / 32.0)
+
+func tile_to_chunk_idy(tile_position := Vector2i.ZERO) -> int:
+	return floor(tile_position.y / 32.0)

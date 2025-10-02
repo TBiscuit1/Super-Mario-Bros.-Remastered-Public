@@ -373,7 +373,7 @@ func handle_tile_cursor() -> void:
 	%TileCursor.global_position = (snapped_position)
 	var old_index := selected_tile_index
 	var tile_position = global_position_to_tile_position(snapped_position + Vector2(-8, -8))
-	tile_position.y = clamp(tile_position.y, -30, 1)
+	tile_position.y = clamp(tile_position.y, -INF, 1)
 	tile_position.x = clamp(tile_position.x, -16, INF)
 	cursor_tile_position = tile_position
 

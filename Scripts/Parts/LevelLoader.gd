@@ -8,6 +8,8 @@ const base64_charset := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
 @onready var level: Level = $"../Level"
 @onready var level_bg: LevelBG = $"../Level/LevelBG"
 
+var expanded = true
+
 var sub_level_file = null
 
 func _ready() -> void:
@@ -40,30 +42,37 @@ func build_level() -> void:
 		return
 	var layer_id := 0
 	for layer in sub_level_file["Layers"]:
-		for chunk_id in layer:
-			var chunk = layer[chunk_id]
-			add_tiles(LevelSaver.decompress_string(chunk["Tiles"]), int(chunk_id), int(layer_id))
-			add_entities(LevelSaver.decompress_string(chunk["Entities"]), int(chunk_id), int(layer_id))
+		for chunk_idx in layer:
+			if (expanded):
+				var chunk_collumn = layer[chunk_idx]
+				for chunk_idy in chunk_collumn:
+					var chunk = chunk_collumn[chunk_idy]
+					add_tiles(LevelSaver.decompress_string(chunk["Tiles"]), Vector2i(int(chunk_idx), int(chunk_idy)), int(layer_id))
+					add_entities(LevelSaver.decompress_string(chunk["Entities"]), Vector2i(int(chunk_idx), int(chunk_idy)), int(layer_id))
+			else:
+				var chunk = layer[chunk_idx]
+				add_tiles(LevelSaver.decompress_string(chunk["Tiles"]), Vector2i(int(chunk_idx), 0), int(layer_id))
+				add_entities(LevelSaver.decompress_string(chunk["Entities"]), Vector2i(int(chunk_idx), 0), int(layer_id))
 		layer_id += 1
 	apply_level_data(sub_level_file["Data"])
 	apply_bg_data(sub_level_file["BG"])
 
-func add_tiles(chunk := "", chunk_id := 0, layer := 0) -> void:
+func add_tiles(chunk := "", chunk_id := Vector2i(0, 0), layer := 0) -> void:
 	for tile in chunk.split("=", false):
 		var tile_position := Vector2i.ZERO
 		var tile_atlas_position := Vector2i.ZERO
 		var source_id := 0
 		
-		tile_position = decode_tile_position_from_chars(tile[0], tile[1], chunk_id)
+		tile_position = decode_tile_position_from_chars(tile[0], tile[1], chunk_id.x, chunk_id.y)
 		source_id = base64_charset.find(tile[4])
 		tile_atlas_position = Vector2i(base64_charset.find(tile[2]), base64_charset.find(tile[3]))
 		editor.tile_layer_nodes[layer].set_cell(tile_position, source_id, tile_atlas_position)
 
-func add_entities(chunk := "", chunk_id := 0, layer := 0) -> void:
+func add_entities(chunk := "", chunk_id := Vector2i(0, 0), layer := 0) -> void:
 	for entity in chunk.split("=", false):
 		var entity_id = entity.get_slice(",", 1)
 		var entity_chunk_position = entity.get_slice(",", 0)
-		var entity_tile_position = decode_tile_position_from_chars(entity_chunk_position[0], entity_chunk_position[1], chunk_id)
+		var entity_tile_position = decode_tile_position_from_chars(entity_chunk_position[0], entity_chunk_position[1], chunk_id.x, chunk_id.y)
 		var entity_node: Node = null
 		if entity_map.has(entity_id) == false:
 			Global.log_error("MISSING ENTITY ID!!!! JOE FORGOT TO UPDATE THE MAP AGAIN :(")
@@ -129,6 +138,22 @@ func apply_level_data(data := "") -> void:
 	ResourceSetterNew.cache.clear()
 	Global.level_theme_changed.emit()
 
+func apply_expanded_data(data := "") -> void:
+	var split = data.split("=")
+	var values := []
+	for i in split:
+		if i.length() == 2:
+			values.append(decode_from_base64_2char(i))
+		elif i.length() == 1:
+			values.append(base64_charset.find(i))
+		else:
+			values.append(i)
+	if (values.size() < 2):
+		values = [false, null]
+	
+	if (values[0]):
+		expanded = true
+
 func apply_bg_data(data := "") -> void:
 	var split = data.split("=", false)
 	var id := 0
@@ -152,12 +177,14 @@ func apply_bg_data(data := "") -> void:
 		id += 1
 	
 
-func decode_tile_position_from_chars(char_x: String, char_y: String, chunk_idx: int) -> Vector2i:
+func decode_tile_position_from_chars(char_x: String, char_y: String, chunk_idx: int, chunk_idy: int) -> Vector2i:
 	
 	var local_x = base64_charset.find(char_x)
 	var local_y = base64_charset.find(char_y)
-
-	return Vector2i(local_x + (chunk_idx * 32), local_y - 30)
+	
+	if (!expanded):
+		local_y -= 30
+	return Vector2i(local_x + (chunk_idx * 32), local_y + (chunk_idy * 32))
 
 func decode_from_base64_2char(encoded: String) -> int:
 	if encoded.length() != 2:
