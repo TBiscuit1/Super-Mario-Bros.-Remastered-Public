@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b526l00ycqca3"]
+[gd_scene load_steps=24 format=3 uid="uid://b526l00ycqca3"]
 
 [ext_resource type="Script" uid="uid://dv18do583a3x0" path="res://Scripts/Classes/Entities/Enemies/Goomba.gd" id="1_ngqvx"]
 [ext_resource type="Texture2D" uid="uid://dtqjo5uvw6s0g" path="res://Assets/Sprites/Enemies/Sigebou.png" id="2_jkcbp"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://cmg61722ktg2m" path="res://Scripts/Classes/Components/BlockBouncingDetection.gd" id="7_g6e7j"]
 [ext_resource type="Script" uid="uid://dri2d5jtu0fbq" path="res://Scripts/Classes/Components/FireballDetection.gd" id="8_eg68x"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="9_rqo8s"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="10_bhka3"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="10_y7r83"]
 [ext_resource type="Script" uid="uid://dq860i312isk" path="res://Scripts/Classes/Components/IcicleDetection.gd" id="11_i4utn"]
 [ext_resource type="Script" uid="uid://cqif1li7otvpl" path="res://Scripts/Parts/SpriteFramesToJsonConverter.gd" id="12_6tape"]
@@ -119,6 +120,11 @@ script = ExtResource("8_eg68x")
 hitbox = NodePath("../Hitbox")
 play_sfx_on_hit = true
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("10_bhka3")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="ShellDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("9_rqo8s")
 hitbox = NodePath("../Hitbox")
@@ -150,5 +156,7 @@ metadata/_custom_type_script = "uid://cqif1li7otvpl"
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="." method="damage_player"]
 [connection signal="block_bounced" from="BlockBouncingDetection" to="." method="die_from_object"]
 [connection signal="block_bounced" from="BlockBouncingDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [100]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="die_from_object"]
 [connection signal="icicle_detected" from="Node" to="." method="die_from_object"]

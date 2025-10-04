@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bdirphnfabey8"]
+[gd_scene load_steps=25 format=3 uid="uid://bdirphnfabey8"]
 
 [ext_resource type="Texture2D" uid="uid://dbq7oso3fo4n6" path="res://Assets/Sprites/Enemies/CheepCheep.png" id="1_123qd"]
 [ext_resource type="Script" uid="uid://b475vfhcp2f30" path="res://Scripts/Classes/Entities/Enemies/SwimmingCheepCheep.gd" id="1_a3qb1"]
@@ -9,6 +9,7 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/GreenCheepCheep.json" id="5_8m1k0"]
 [ext_resource type="Script" uid="uid://c3gg32ivrlq8n" path="res://Scripts/Classes/Components/GibSpawner.gd" id="5_qwki7"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="6_qwki7"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="8_pyihc"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="10_8m1k0"]
 [ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="11_21r3x"]
 [ext_resource type="Script" uid="uid://b8vmbtoaaq5nc" path="res://Scripts/Parts/EditorToggleDetection.gd" id="12_si7cd"]
@@ -171,6 +172,11 @@ script = ExtResource("4_cd02n")
 hitbox = NodePath("../Sprite/Hitbox")
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("8_pyihc")
+hitbox = NodePath("../Sprite/Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="GibSpawner" type="Node" parent="." node_paths=PackedStringArray("visuals")]
 script = ExtResource("5_qwki7")
 visuals = NodePath("../Sprite")
@@ -205,6 +211,8 @@ metadata/_custom_type_script = "uid://ba18grqjixded"
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="GibSpawner" method="stomp_die"]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="toggled" from="LevelEditorToggleDetection" to="." method="_ready"]
 [connection signal="explosion_entered" from="ExplosionDetection" to="." method="die_from_object"]
 [connection signal="explosion_entered" from="ExplosionDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]

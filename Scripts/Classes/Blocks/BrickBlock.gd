@@ -29,5 +29,14 @@ func on_shell_block_hit(_shell: Shell) -> void:
 	else:
 		dispense_item()
 
+func on_hammer_block_hit(hammer: PlayerHammer) -> void:
+	if item == null:
+		await get_tree().physics_frame
+		destroy()
+		Global.score += 50
+	else:
+		dispense_item()
+	hammer.queue_free()
+
 func set_coin_count() -> void:
 	item_amount = 2

@@ -8,9 +8,10 @@ func _ready() -> void:
 	can_hit = true
 	has_hit = false
 
-func on_block_hit() -> void:
+func on_block_hit(hammer: PlayerHammer = null) -> void:
 	if can_hit == false or has_hit:
 		return
+	if (hammer): hammer.queue_free()
 	has_hit = true
 	AudioManager.play_sfx("switch", global_position)
 	can_hit = false

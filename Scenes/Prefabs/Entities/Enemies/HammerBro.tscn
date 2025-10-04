@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://kr7i2kf6rew0"]
+[gd_scene load_steps=37 format=3 uid="uid://kr7i2kf6rew0"]
 
 [ext_resource type="Script" uid="uid://b8gdlotx0at6x" path="res://Scripts/Classes/Entities/Enemies/HammerBro.gd" id="1_8mo24"]
 [ext_resource type="Texture2D" uid="uid://l3l3icupve4t" path="res://Assets/Sprites/Enemies/HammerBro.png" id="2_8mo24"]
@@ -13,6 +13,7 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/HammerBro.json" id="8_0w8yj"]
 [ext_resource type="Script" uid="uid://c3gg32ivrlq8n" path="res://Scripts/Classes/Components/GibSpawner.gd" id="8_1mp8k"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="9_scjjh"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="11_dq4jl"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="12_hx42c"]
 [ext_resource type="Script" uid="uid://cqif1li7otvpl" path="res://Scripts/Parts/SpriteFramesToJsonConverter.gd" id="15_2r2js"]
 [ext_resource type="Script" uid="uid://ba18grqjixded" path="res://Scripts/Classes/Components/ExplosionDetection.gd" id="16_0w8yj"]
@@ -272,6 +273,11 @@ script = ExtResource("7_scjjh")
 hitbox = NodePath("../Hitbox")
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("11_dq4jl")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="GibSpawner" type="Node" parent="." node_paths=PackedStringArray("visuals")]
 script = ExtResource("8_1mp8k")
 visuals = NodePath("../Sprite")
@@ -322,6 +328,8 @@ metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
 [connection signal="block_bounced" from="BlockBouncingDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [1000]]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [1000]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [1000]]
 [connection signal="gib_about_to_spawn" from="GibSpawner" to="Sprite/Hammer" method="hide"]
 [connection signal="screen_entered" from="VisibleOnScreenEnabler2D" to="." method="on_screen_entered"]
 [connection signal="timeout" from="Timer" to="." method="charge"]

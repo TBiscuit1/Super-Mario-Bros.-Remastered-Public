@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dinpjmg0q23rv"]
+[gd_scene load_steps=24 format=3 uid="uid://dinpjmg0q23rv"]
 
 [ext_resource type="Script" uid="uid://bds7rntb0btee" path="res://Scripts/Classes/Entities/Enemies/Spiny.gd" id="1_u8w4p"]
 [ext_resource type="Texture2D" uid="uid://diemx33h3bxa2" path="res://Assets/Sprites/Enemies/Spiny.png" id="2_u8w4p"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dri2d5jtu0fbq" path="res://Scripts/Classes/Components/FireballDetection.gd" id="7_a74i7"]
 [ext_resource type="Script" uid="uid://cmg61722ktg2m" path="res://Scripts/Classes/Components/BlockBouncingDetection.gd" id="8_j3bt6"]
 [ext_resource type="Script" uid="uid://dlq6o2rg1x7in" path="res://Scripts/Classes/Components/BasicEnemyMovement.gd" id="10_a74i7"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="10_ck73o"]
 [ext_resource type="Script" uid="uid://ba18grqjixded" path="res://Scripts/Classes/Components/ExplosionDetection.gd" id="11_yhsi8"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="12_7f13k"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="13_7f13k"]
@@ -134,6 +135,11 @@ script = ExtResource("7_a74i7")
 hitbox = NodePath("../Hitbox")
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("10_ck73o")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="BlockBouncingDetection" type="Node" parent="."]
 script = ExtResource("8_j3bt6")
 metadata/_custom_type_script = "uid://cmg61722ktg2m"
@@ -168,6 +174,8 @@ metadata/_custom_type_script = "uid://33no4mylhh1r"
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="block_bounced" from="BlockBouncingDetection" to="." method="die_from_object"]
 [connection signal="block_bounced" from="BlockBouncingDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="explosion_entered" from="ExplosionDetection" to="." method="die_from_object"]

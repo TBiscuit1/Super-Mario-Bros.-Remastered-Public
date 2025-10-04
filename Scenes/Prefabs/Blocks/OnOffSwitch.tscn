@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c0020qrw11oy4"]
+[gd_scene load_steps=12 format=3 uid="uid://c0020qrw11oy4"]
 
 [ext_resource type="PackedScene" uid="uid://5ua3p0lfl1bf" path="res://Scenes/Prefabs/Blocks/BooRaceBlocks/BooOnOffSwitch.tscn" id="1_bblk7"]
 [ext_resource type="Texture2D" uid="uid://sy6ivu4qc0o3" path="res://Assets/Sprites/Blocks/OnOffSwitch.png" id="2_xglou"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Blocks/OnOffSwitch.json" id="3_xglou"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="4_cs2ia"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cs2ia"]
 atlas = ExtResource("2_xglou")
@@ -57,6 +58,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8o30n"]
+size = Vector2(16, 16)
+
 [node name="OnOffSwitch" instance=ExtResource("1_bblk7")]
 destructable = false
 
@@ -68,5 +72,19 @@ autoplay = "Off"
 [node name="ResourceSetter" parent="Sprite" index="0"]
 resource_json = ExtResource("3_xglou")
 
+[node name="HammerHitbox" type="Area2D" parent="." index="3"]
+
+[node name="HammerCollision" type="CollisionShape2D" parent="HammerHitbox" index="0"]
+visible = false
+shape = SubResource("RectangleShape2D_8o30n")
+
+[node name="HammerDetection" type="Node" parent="." index="4" node_paths=PackedStringArray("hitbox")]
+script = ExtResource("4_cs2ia")
+hitbox = NodePath("../HammerHitbox")
+play_sfx_on_hit = true
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [connection signal="shell_block_hit" from="." to="." method="on_block_hit" unbinds=1]
 [connection signal="shell_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="on_block_hit"]
+[connection signal="hammer_hit" from="HammerDetection" to="BlockAnimations" method="bounce_block" unbinds=1]

@@ -7,14 +7,15 @@ const HAMMER = preload("res://Scenes/Prefabs/Entities/Items/Hammer.tscn")
 @export var can_hammer := false
 @export var can_fire := true
 
-@export var music_enabled := true
+@export var starts_boss_theme := true
+var started_theme = false
 
 var target_player: Player = null
 
 var can_move := true
 var can_fall := true
 
-var health := 5
+@export_range(1, 10, 1) var health := 5
 
 var move_dir := -1
 
@@ -128,15 +129,27 @@ func fireball_hit() -> void:
 		$SpriteScaleJoint/HurtAnimation.play("Hurt")
 		AudioManager.play_sfx("kick", global_position)
 
+func hammer_hit(hammer: PlayerHammer) -> void:
+	hammer.queue_free()
+	health -= 2
+	AudioManager.play_sfx("bump", global_position)
+	if health <= 0:
+		die()
+	else:
+		$SpriteScaleJoint/HurtAnimation.stop()
+		$SpriteScaleJoint/HurtAnimation.play("Hurt")
+		AudioManager.play_sfx("kick", global_position)
+
 func play_music() -> void:
 	for i: EntityGenerator in get_tree().get_nodes_in_group("EntityGenerators"):
 		if i.entity_scene != null:
 			if i.entity_scene.resource_path == "res://Scenes/Prefabs/Entities/Enemies/BowserFlame.tscn":
 				i.queue_free()
 	if Settings.file.audio.extra_bgm == 0: return
-	if Global.level_editor != null:
+	if started_theme or (Global.level_editor != null and !Global.level_editor.playing_level):
 		return
-	if music_enabled:
+	if starts_boss_theme:
+		started_theme = true
 		AudioManager.set_music_override(AudioManager.MUSIC_OVERRIDES.BOWSER, 5, false)
 
 

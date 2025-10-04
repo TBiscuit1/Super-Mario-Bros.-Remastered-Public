@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bpsrc21amnlgb"]
+[gd_scene load_steps=13 format=3 uid="uid://bpsrc21amnlgb"]
 
 [ext_resource type="Script" uid="uid://bbp3jg7yg1700" path="res://Scripts/Classes/Entities/Enemies/Boo.gd" id="1_ilcde"]
 [ext_resource type="Texture2D" uid="uid://c3l6ynlufxcfp" path="res://Assets/Sprites/Enemies/Boo.png" id="1_mkqqf"]
@@ -6,6 +6,8 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/Boo.json" id="3_xhmhl"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="5_xhmhl"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="6_7u2yg"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="7_wu7y3"]
+[ext_resource type="Script" uid="uid://c3gg32ivrlq8n" path="res://Scripts/Classes/Components/GibSpawner.gd" id="8_i46bk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wu7y3"]
 atlas = ExtResource("1_mkqqf")
@@ -37,8 +39,10 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ilcde"]
 size = Vector2(12, 12)
 
-[node name="Boo" type="Node2D" groups=["Enemies"]]
+[node name="Boo" type="Node2D" node_paths=PackedStringArray("on_screen_enabler", "score_note_adder") groups=["Enemies"]]
 script = ExtResource("1_ilcde")
+on_screen_enabler = NodePath("VisibleOnScreenEnabler2D")
+score_note_adder = NodePath("ScoreNoteSpawner")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -8)
@@ -74,5 +78,15 @@ script = ExtResource("6_7u2yg")
 disable_physics = false
 metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
 
-[connection signal="killed" from="." to="ScoreNoteSpawner" method="spawn_note" binds= [1000]]
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("7_wu7y3")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
+[node name="GibSpawner" type="Node" parent="." node_paths=PackedStringArray("visuals")]
+script = ExtResource("8_i46bk")
+visuals = NodePath("../Sprite")
+metadata/_custom_type_script = "uid://c3gg32ivrlq8n"
+
 [connection signal="area_entered" from="Hitbox" to="." method="on_area_entered"]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]

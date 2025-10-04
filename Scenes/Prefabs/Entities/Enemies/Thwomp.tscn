@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dq6syqkg4qjf0"]
+[gd_scene load_steps=20 format=3 uid="uid://dq6syqkg4qjf0"]
 
 [ext_resource type="Script" uid="uid://bxfc7hxw13s6q" path="res://Scripts/Classes/Entities/Enemies/Thwomp.gd" id="1_bl7l2"]
 [ext_resource type="Texture2D" uid="uid://dw5k3dr3kedw3" path="res://Assets/Sprites/Enemies/Thwomp.png" id="2_kdp37"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://c3gg32ivrlq8n" path="res://Scripts/Classes/Components/GibSpawner.gd" id="7_01c5y"]
 [ext_resource type="Script" uid="uid://dri2d5jtu0fbq" path="res://Scripts/Classes/Components/FireballDetection.gd" id="8_5xuvp"]
 [ext_resource type="Script" uid="uid://dq860i312isk" path="res://Scripts/Classes/Components/IcicleDetection.gd" id="9_01c5y"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="9_kin0w"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="10_f8b23"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="11_jkv5r"]
 
@@ -129,6 +130,11 @@ hitbox = NodePath("../Hitbox")
 play_sfx_on_hit = true
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("9_kin0w")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="IcicleDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("9_01c5y")
 hitbox = NodePath("../Hitbox")
@@ -141,6 +147,7 @@ metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
 
 [node name="ScoreNoteSpawner" type="Node" parent="."]
 script = ExtResource("11_jkv5r")
+add_score = true
 metadata/_custom_type_script = "uid://5octqlf4ohel"
 
 [connection signal="killed" from="." to="GibSpawner" method="summon_gib"]
@@ -148,3 +155,5 @@ metadata/_custom_type_script = "uid://5octqlf4ohel"
 [connection signal="player_hit" from="EnemyPlayerDetection" to="." method="damage_player"]
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="." method="damage_player"]
 [connection signal="block_bounced" from="BlockBouncingDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [1000]]

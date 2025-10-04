@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://beggmeixrin75"]
+[gd_scene load_steps=23 format=3 uid="uid://beggmeixrin75"]
 
 [ext_resource type="Script" uid="uid://b1b6aiai213ci" path="res://Scripts/Classes/Entities/Enemies/Pokey.gd" id="1_b54ls"]
 [ext_resource type="Texture2D" uid="uid://dj46y8vhqlqjw" path="res://Assets/Sprites/Enemies/Pokey.png" id="2_8aome"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://chj8hu207lrh" path="res://Scripts/Classes/Components/EnemyPlayerDetection.gd" id="6_bjt0v"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="7_rjgwh"]
 [ext_resource type="Script" uid="uid://dq860i312isk" path="res://Scripts/Classes/Components/IcicleDetection.gd" id="8_1jb5g"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="8_rjgwh"]
 [ext_resource type="Script" uid="uid://cmg61722ktg2m" path="res://Scripts/Classes/Components/BlockBouncingDetection.gd" id="9_klwvr"]
 [ext_resource type="Script" uid="uid://ba18grqjixded" path="res://Scripts/Classes/Components/ExplosionDetection.gd" id="10_wuthq"]
 [ext_resource type="Script" uid="uid://dlq6o2rg1x7in" path="res://Scripts/Classes/Components/BasicEnemyMovement.gd" id="11_8aome"]
@@ -314,6 +315,16 @@ hitbox = NodePath("../BodyHitbox")
 play_sfx_on_hit = true
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetectionHead" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("8_rjgwh")
+hitbox = NodePath("../HeadHitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
+[node name="HammerDetectionBody" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("8_rjgwh")
+hitbox = NodePath("../BodyHitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="EnemyPlayerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("6_bjt0v")
 hitbox = NodePath("../BodyHitbox")
@@ -377,6 +388,10 @@ script = SubResource("GDScript_30hxr")
 
 [connection signal="killed" from="." to="." method="summon_part_gibs" unbinds=1]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetectionHead" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetectionHead" to="ScoreNoteSpawner" method="spawn_note" binds= [500]]
+[connection signal="hammer_hit" from="HammerDetectionBody" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetectionBody" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="invincible_player_hit" from="EnemyPlayerDetection" to="." method="die_from_object"]
 [connection signal="player_hit" from="EnemyPlayerDetection" to="." method="damage_player"]
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="." method="damage_player"]

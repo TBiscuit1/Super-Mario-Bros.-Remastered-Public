@@ -275,6 +275,7 @@ func play_level() -> void:
 		level_file = await $LevelSaver.save_level(level_name, level_author, level_desc, difficulty)
 	current_state = EditorState.PLAYTESTING
 	handle_hud()
+	
 
 func parse_tiles() -> void:
 	saved_entity_layers = [null, null, null, null, null]

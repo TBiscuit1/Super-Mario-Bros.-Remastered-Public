@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bxsay5e6dhcqb"]
+[gd_scene load_steps=26 format=3 uid="uid://bxsay5e6dhcqb"]
 
 [ext_resource type="Script" uid="uid://n123x5yuqpjd" path="res://Scripts/Classes/Entities/Enemies/DryBones.gd" id="1_8c647"]
 [ext_resource type="Texture2D" uid="uid://c5snfukhcacyf" path="res://Assets/Sprites/Enemies/DryBones.png" id="2_qya46"]
@@ -9,6 +9,7 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/DryBones.json" id="5_l4h6l"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="6_l4h6l"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="7_qya46"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="8_w4qtl"]
 [ext_resource type="Script" uid="uid://dlq6o2rg1x7in" path="res://Scripts/Classes/Components/BasicEnemyMovement.gd" id="10_br3pe"]
 [ext_resource type="Script" uid="uid://ba18grqjixded" path="res://Scripts/Classes/Components/ExplosionDetection.gd" id="11_l4h6l"]
 
@@ -167,6 +168,12 @@ one_way_collision = true
 position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_tsi1c")
 
+[node name="HammerHitbox" type="Area2D" parent="."]
+
+[node name="Shape" type="CollisionShape2D" parent="HammerHitbox"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_tsi1c")
+
 [node name="EnemyPlayerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("4_y8gga")
 hitbox = NodePath("../Hitbox")
@@ -177,6 +184,11 @@ script = ExtResource("5_br3pe")
 hitbox = NodePath("../Hitbox")
 play_sfx_on_hit = true
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("8_w4qtl")
+hitbox = NodePath("../HammerHitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
 
 [node name="ShellDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("6_l4h6l")
@@ -194,6 +206,7 @@ rect = Rect2(-10, -13, 20, 23)
 
 [node name="ScoreNoteSpawner" type="Node" parent="."]
 script = ExtResource("7_qya46")
+add_score = true
 metadata/_custom_type_script = "uid://5octqlf4ohel"
 
 [node name="BasicEnemyMovement" type="Node" parent="."]
@@ -209,6 +222,8 @@ metadata/_custom_type_script = "uid://ba18grqjixded"
 [connection signal="invincible_player_hit" from="EnemyPlayerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="player_hit" from="EnemyPlayerDetection" to="." method="damage_player"]
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="." method="stomped_on"]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="die_from_object"]
 [connection signal="explosion_entered" from="ExplosionDetection" to="." method="die_from_object"]
 [connection signal="explosion_entered" from="ExplosionDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]

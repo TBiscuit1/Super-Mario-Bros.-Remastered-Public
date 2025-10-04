@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dbob4iexex6yp"]
+[gd_scene load_steps=31 format=3 uid="uid://dbob4iexex6yp"]
 
 [ext_resource type="Script" uid="uid://4isgtypd8yqc" path="res://Scripts/Classes/Entities/Enemies/Spike.gd" id="1_5cp2h"]
 [ext_resource type="Texture2D" uid="uid://drf0xqp7af1bx" path="res://Assets/Sprites/Enemies/Spike.png" id="2_dd7on"]
@@ -13,6 +13,7 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Items/SpikeBall.json" id="7_l0d5l"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="7_m8jkd"]
 [ext_resource type="Script" uid="uid://dlq6o2rg1x7in" path="res://Scripts/Classes/Components/BasicEnemyMovement.gd" id="12_dhnkc"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="12_jeoem"]
 [ext_resource type="Script" uid="uid://bx6r8sjar6cwr" path="res://Scripts/Classes/Components/BasicStaticMovement.gd" id="13_vg6vt"]
 [ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="14_px5di"]
 [ext_resource type="Script" uid="uid://ba18grqjixded" path="res://Scripts/Classes/Components/ExplosionDetection.gd" id="15_5pdnx"]
@@ -255,6 +256,7 @@ metadata/_custom_type_script = "uid://c3gg32ivrlq8n"
 
 [node name="ScoreNoteSpawner" type="Node" parent="."]
 script = ExtResource("5_w6nqc")
+add_score = true
 metadata/_custom_type_script = "uid://5octqlf4ohel"
 
 [node name="FireballDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
@@ -262,6 +264,11 @@ script = ExtResource("6_iboug")
 hitbox = NodePath("../Hitbox")
 play_sfx_on_hit = true
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("12_jeoem")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
 
 [node name="ShellDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("7_m8jkd")
@@ -303,6 +310,8 @@ metadata/_custom_type_script = "uid://ba18grqjixded"
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="GibSpawner" method="stomp_die"]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [500]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="die_from_object"]
 [connection signal="timeout" from="ThrowTimer" to="." method="throw_ball"]
 [connection signal="timeout" from="TurnTimer" to="." method="on_timeout"]

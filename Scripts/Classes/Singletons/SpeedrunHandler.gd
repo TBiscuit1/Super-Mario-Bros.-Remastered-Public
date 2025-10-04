@@ -181,7 +181,7 @@ func record_frame(player: Player) -> void:
 		levels.append(Global.current_level.scene_file_path)
 	data += str(int(player.global_position.x)) + "="
 	data += str(int(player.global_position.y)) + "="
-	data += str(["Small", "Big", "Fire"].find(player.power_state.state_name)) + "="
+	data += str(["Small", "Big", "Fire", "Hammer"].find(player.power_state.state_name)) + "="
 	if anim_list.has(player.sprite.animation) == false:
 		anim_list.append(player.sprite.animation)
 	data += str(anim_list.find(player.sprite.animation)) + "="

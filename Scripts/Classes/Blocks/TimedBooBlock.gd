@@ -27,9 +27,10 @@ func on_timeout() -> void:
 	else:
 		$Sprite.play("Off" + str(time))
 
-func block_hit() -> void:
+func block_hit(hammer: PlayerHammer = null) -> void:
 	if not can_hit:
 		return
+	if (hammer): hammer.queue_free()
 	can_hit = false
 	get_tree().call_group("BooBlocks", "on_switch_hit")
 	await get_tree().create_timer(0.25, false).timeout

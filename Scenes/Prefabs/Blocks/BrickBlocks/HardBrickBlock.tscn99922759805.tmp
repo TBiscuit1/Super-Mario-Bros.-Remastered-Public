@@ -1,0 +1,115 @@
+[gd_scene load_steps=12 format=3 uid="uid://c2tk61dy6puvc"]
+
+[ext_resource type="PackedScene" uid="uid://55lw62f6ol33" path="res://Scenes/Prefabs/Particles/BrickDestructionParticles.tscn" id="2_8wh06"]
+[ext_resource type="Script" uid="uid://caq1qiwmy0mox" path="res://Scripts/Parts/BetterAnimatedSprite.gd" id="3_6gabp"]
+[ext_resource type="Script" uid="uid://cbal8ms2oe1ik" path="res://Scripts/Classes/Components/ResourceSetterNew.gd" id="4_s3y88"]
+[ext_resource type="JSON" path="res://Assets/Sprites/Tilesets/Terrain/HardBrickBlock.json" id="5_8wh06"]
+[ext_resource type="PackedScene" uid="uid://cijkvfkthetn5" path="res://Scenes/Parts/BlockAnimations.tscn" id="6_v2xmu"]
+[ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="7_i5h54"]
+[ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="9_eyogo"]
+[ext_resource type="Script" uid="uid://maqpreddu5kg" path="res://Scripts/Classes/Components/LevelPersistance.gd" id="10_1h2m8"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="11_8wh06"]
+
+[sub_resource type="GDScript" id="GDScript_fym00"]
+script/source = "class_name HardBrickBlock
+extends Block
+
+var ticking_down := false
+
+func _ready() -> void:
+	if item_amount == 10 and item.resource_path == \"res://Scenes/Prefabs/Entities/Items/SpinningCoin.tscn\" and is_instance_valid(Global.level_editor) == false:
+		Global.log_warning(\"Coin Brick Block is wrong! please report!: \" + name)
+
+func on_shell_block_hit(_shell: Shell) -> void:
+	if item == null:
+		await get_tree().physics_frame
+		destroy()
+		Global.score += 50
+	else:
+		dispense_item()
+
+func on_hammer_hit(hammer: PlayerHammer) -> void:
+	if item == null:
+		await get_tree().physics_frame
+		destroy()
+		Global.score += 50
+	else:
+		dispense_item()
+	hammer.queue_free()
+
+func set_coin_count() -> void:
+	item_amount = 2
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3g5f"]
+size = Vector2(16, 16)
+
+[node name="HardBrickBlock" type="AnimatableBody2D" node_paths=PackedStringArray("visuals") groups=["Blocks"]]
+z_index = -1
+disable_mode = 1
+collision_layer = 6
+collision_mask = 0
+script = SubResource("GDScript_fym00")
+visuals = NodePath("Sprite")
+destruction_particle_scene = ExtResource("2_8wh06")
+metadata/_custom_type_script = "uid://b5ejlbl0vp1gm"
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+process_mode = 1
+script = ExtResource("3_6gabp")
+do_offset = false
+metadata/_custom_type_script = "uid://caq1qiwmy0mox"
+
+[node name="ResourceSetterNew" type="Node" parent="Sprite" node_paths=PackedStringArray("node_to_affect")]
+script = ExtResource("4_s3y88")
+node_to_affect = NodePath("..")
+property_name = "sprite_frames"
+resource_json = ExtResource("5_8wh06")
+metadata/_custom_type_script = "uid://cbal8ms2oe1ik"
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="HammerCollision" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+shape = SubResource("RectangleShape2D_b3g5f")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_b3g5f")
+
+[node name="BlockAnimations" parent="." instance=ExtResource("6_v2xmu")]
+
+[node name="EditorPropertyExposer" type="Node" parent="."]
+script = ExtResource("7_i5h54")
+properties = Array[String](["item", "item_amount", "mushroom_if_small"])
+filters = Dictionary[String, String]({
+"item": "can_be_stored"
+})
+
+[node name="TrackJoint" type="Node" parent="."]
+script = ExtResource("9_eyogo")
+offset = Vector2(0, 0)
+disable_physics = false
+metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
+
+[node name="LevelPersistance" type="Node" parent="."]
+script = ExtResource("10_1h2m8")
+metadata/_custom_type_script = "uid://maqpreddu5kg"
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("11_8wh06")
+hitbox = NodePath("../Hitbox")
+play_sfx_on_hit = true
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
+[connection signal="block_destroyed" from="." to="LevelPersistance" method="set_as_active_2"]
+[connection signal="block_emptied" from="." to="LevelPersistance" method="set_as_active"]
+[connection signal="player_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
+[connection signal="shell_block_hit" from="." to="." method="on_shell_block_hit"]
+[connection signal="shell_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
+[connection signal="enabled" from="LevelPersistance" to="." method="spawn_empty_block"]
+[connection signal="enabled_2" from="LevelPersistance" to="." method="queue_free"]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="on_hammer_hit"]
+[connection signal="hammer_hit" from="HammerDetection" to="BlockAnimations" method="bounce_block" unbinds=1]

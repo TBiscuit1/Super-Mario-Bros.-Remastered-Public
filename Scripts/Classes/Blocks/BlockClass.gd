@@ -33,9 +33,10 @@ func _enter_tree() -> void:
 		if item.resource_path.contains(Global.current_level.scene_file_path):
 			Global.log_error("ITEM SCENE IS NULL! BLOCK NAME: " + str(name) + " PLEASE REPORT!")
 
-func dispense_item() -> void:
+func dispense_item(hammer: Node2D = null) -> void:
 	if can_hit == false:
 		return
+	if (hammer && hammer is PlayerHammer): hammer.queue_free()
 	can_hit = false
 	await get_tree().create_timer(0.1, false).timeout
 	DiscoLevel.combo_meter += combo_meter_amount

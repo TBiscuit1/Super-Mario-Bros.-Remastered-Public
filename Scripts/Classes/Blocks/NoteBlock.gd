@@ -7,14 +7,14 @@ signal bounced
 var animating := false
 @export var play_sfx := true
 
-func bounce_up() -> void:
+func bounce_up(hammer: PlayerHammer = null) -> void:
 	if bouncing or animating:
 		return
 	bounced.emit()
 	bouncing = true
 	animating = true
 	%Animations.play("BounceUp")
-	dispense_item(-1)
+	dispense_item(hammer, -1)
 	await %Animations.animation_finished
 	bouncing = false
 	animating = false
@@ -36,7 +36,7 @@ func bounce_down(body: PhysicsBody2D) -> void:
 		body.normal_state.jump_queued = false
 		body.spring_bouncing = true
 	%Animations.play("BounceDown")
-	dispense_item(1)
+	dispense_item(null, 1)
 	await %Animations.animation_finished
 	animating = false
 	bouncing = false
@@ -59,7 +59,8 @@ func bounce_bodies() -> void:
 			i.velocity = Vector2.ZERO
 	bodies.clear()
 
-func dispense_item(direction := -1) -> void:
+func dispense_item(hammer: Node2D = null, direction := -1) -> void:
+	if (hammer && hammer is PlayerHammer): hammer.queue_free()
 	if item == null or item_amount <= 0:
 		return
 	item_amount -= 1

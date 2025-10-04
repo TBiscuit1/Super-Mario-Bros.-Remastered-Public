@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bn651dli8j2rj"]
+[gd_scene load_steps=17 format=3 uid="uid://bn651dli8j2rj"]
 
 [ext_resource type="Script" uid="uid://dm44kedpj4m80" path="res://Scripts/Classes/Blocks/TurnBlock.gd" id="1_keywi"]
 [ext_resource type="Texture2D" uid="uid://btt618edhifoj" path="res://Assets/Sprites/Blocks/TurnBlock.png" id="2_2j2lx"]
@@ -7,6 +7,7 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Blocks/TurnBlock.json" id="4_keywi"]
 [ext_resource type="PackedScene" uid="uid://cijkvfkthetn5" path="res://Scenes/Parts/BlockAnimations.tscn" id="5_xbwt3"]
 [ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="6_2qcru"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="6_4xif8"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="7_2j2lx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8yy4r"]
@@ -48,6 +49,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b3g5f"]
 size = Vector2(16, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gl7xw"]
+size = Vector2(16, 16)
+
 [node name="TurnBlock" type="AnimatableBody2D" node_paths=PackedStringArray("visuals") groups=["Blocks"]]
 z_index = -1
 collision_layer = 6
@@ -72,6 +76,18 @@ metadata/_custom_type_script = "uid://cbal8ms2oe1ik"
 visible = false
 shape = SubResource("RectangleShape2D_b3g5f")
 
+[node name="HammerHitbox" type="Area2D" parent="."]
+
+[node name="HammerCollision" type="CollisionShape2D" parent="HammerHitbox"]
+visible = false
+shape = SubResource("RectangleShape2D_gl7xw")
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("6_4xif8")
+hitbox = NodePath("../HammerHitbox")
+play_sfx_on_hit = true
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="BlockAnimations" parent="." instance=ExtResource("5_xbwt3")]
 
 [node name="EditorPropertyExposer" type="Node" parent="."]
@@ -90,3 +106,5 @@ metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
 [connection signal="player_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
 [connection signal="shell_block_hit" from="." to="." method="on_shell_block_hit"]
 [connection signal="shell_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="on_hammer_block_hit"]
+[connection signal="hammer_hit" from="HammerDetection" to="BlockAnimations" method="bounce_block" unbinds=1]

@@ -15,7 +15,7 @@ atlas = ExtResource("2_qh1vn")
 region = Rect2(0, 0, 16, 16)
 
 [node name="InvisibleQuestionBlock" instance=ExtResource("1_8myna")]
-collision_layer = 1
+collision_layer = 6
 script = ExtResource("2_u3lik")
 combo_meter_amount = 10
 
@@ -23,8 +23,10 @@ combo_meter_amount = 10
 visible = false
 
 [node name="Collision" parent="." index="1"]
-visible = true
 rotation = 3.14159
+disabled = true
+
+[node name="HammerCollision" parent="HammerHitbox" index="0"]
 disabled = true
 
 [node name="Hitbox" type="Area2D" parent="." index="3"]

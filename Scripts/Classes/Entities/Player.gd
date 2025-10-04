@@ -86,7 +86,7 @@ var is_posing := false
 
 const COMBO_VALS := [100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 8000, null]
 
-@export_enum("Small", "Big", "Fire") var starting_power_state := 0
+@export_enum("Small", "Big", "Fire", "Hammer") var starting_power_state := 0
 @onready var state_machine: StateMachine = $States
 @onready var normal_state: Node = $States/Normal
 @export var auto_death_pit := true
@@ -114,7 +114,7 @@ var can_uncrouch := false
 var can_air_turn := false
 
 static var CHARACTERS := ["Mario", "Luigi", "Toad", "Toadette"]
-const POWER_STATES := ["Small", "Big", "Fire"]
+const POWER_STATES := ["Small", "Big", "Fire", "Hammer"]
 
 signal moved
 signal dead
@@ -259,6 +259,9 @@ func editor_level_start() -> void:
 	await get_tree().create_timer(0.1, false).timeout
 	if camera_right_limit <= global_position.x:
 		camera_right_limit = 99999999
+	for bowser in get_tree().get_nodes_in_group("Bowser"):
+		if (bowser.get_node("VisibleOnScreenEnabler2D").is_on_screen()):
+			bowser.play_music()
 
 
 func _physics_process(delta: float) -> void:

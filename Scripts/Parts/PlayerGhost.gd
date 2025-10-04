@@ -20,7 +20,7 @@ func apply_data(data := "") -> void:
 	global_position.x = int(values[0])
 	global_position.y = int(values[1])
 	
-	sprite.force_power_state = ["Small", "Big", "Fire"][int(values[2])]
+	sprite.force_power_state = ["Small", "Big", "Fire", "Hammer"][int(values[2])]
 	if sprite.force_power_state != current_power_state:
 		sprite.update()
 	current_power_state = sprite.force_power_state

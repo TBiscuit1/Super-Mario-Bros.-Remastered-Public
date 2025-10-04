@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cwhvsfp31cuu6"]
+[gd_scene load_steps=29 format=3 uid="uid://cwhvsfp31cuu6"]
 
 [ext_resource type="Script" uid="uid://cemetiu57dblq" path="res://Scripts/Classes/Entities/Enemies/FighterFly.gd" id="1_unlki"]
 [ext_resource type="Texture2D" uid="uid://gnac5qwog2ar" path="res://Assets/Sprites/Enemies/FighterFly.png" id="2_jslnt"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dri2d5jtu0fbq" path="res://Scripts/Classes/Components/FireballDetection.gd" id="8_s7wf1"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="9_wbo1r"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="10_0bgxg"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="10_d7ynx"]
 [ext_resource type="Script" uid="uid://dq860i312isk" path="res://Scripts/Classes/Components/IcicleDetection.gd" id="11_aeemo"]
 [ext_resource type="Script" uid="uid://dlq6o2rg1x7in" path="res://Scripts/Classes/Components/BasicEnemyMovement.gd" id="12_g551b"]
 [ext_resource type="Script" uid="uid://cqif1li7otvpl" path="res://Scripts/Parts/SpriteFramesToJsonConverter.gd" id="14_unlki"]
@@ -158,6 +159,11 @@ script = ExtResource("7_nm5h2")
 script = ExtResource("8_s7wf1")
 hitbox = NodePath("../Hitbox")
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("10_d7ynx")
+hitbox = NodePath("../Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="ShellDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
 script = ExtResource("9_wbo1r")
 hitbox = NodePath("../Hitbox")
@@ -199,6 +205,8 @@ metadata/_custom_type_script = "uid://ba18grqjixded"
 [connection signal="block_bounced" from="BlockBouncingDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [100]]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [100]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [100]]
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="die_from_object"]
 [connection signal="icicle_detected" from="Node" to="." method="die_from_object"]
 [connection signal="explosion_entered" from="ExplosionDetection" to="." method="die_from_object"]

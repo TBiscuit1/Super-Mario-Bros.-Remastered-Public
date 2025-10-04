@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dgq7enviy1qhw"]
+[gd_scene load_steps=23 format=3 uid="uid://dgq7enviy1qhw"]
 
 [ext_resource type="Script" uid="uid://du5hnwdhv7x66" path="res://Scripts/Classes/Blocks/TimedBooBlock.gd" id="1_hessd"]
 [ext_resource type="Script" uid="uid://cbal8ms2oe1ik" path="res://Scripts/Classes/Components/ResourceSetterNew.gd" id="3_5y3wt"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bi13n4mw0to20" path="res://Assets/Sprites/Blocks/TimedBooBlock.png" id="3_46g6h"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Blocks/TimedBooBlock.json" id="4_7bqom"]
 [ext_resource type="PackedScene" uid="uid://cijkvfkthetn5" path="res://Scenes/Parts/BlockAnimations.tscn" id="4_tgrgf"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="7_megl7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_slvan"]
 atlas = ExtResource("3_46g6h")
@@ -137,6 +138,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ce8wa"]
 size = Vector2(16, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c01ii"]
+size = Vector2(16, 16)
+
 [node name="TimedBooBlock" type="AnimatableBody2D" node_paths=PackedStringArray("visuals") groups=["BooBlocks"]]
 collision_layer = 6
 script = ExtResource("1_hessd")
@@ -167,8 +171,22 @@ shape = SubResource("RectangleShape2D_ce8wa")
 
 [node name="BlockAnimations" parent="." instance=ExtResource("4_tgrgf")]
 
+[node name="HammerHitbox" type="Area2D" parent="."]
+
+[node name="HammerCollision" type="CollisionShape2D" parent="HammerHitbox"]
+visible = false
+shape = SubResource("RectangleShape2D_c01ii")
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("7_megl7")
+hitbox = NodePath("../HammerHitbox")
+play_sfx_on_hit = true
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [connection signal="player_block_hit" from="." to="." method="block_hit" unbinds=1]
 [connection signal="player_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
 [connection signal="shell_block_hit" from="." to="." method="block_hit" unbinds=1]
 [connection signal="shell_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
 [connection signal="timeout" from="Timer" to="." method="on_timeout"]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="block_hit"]
+[connection signal="hammer_hit" from="HammerDetection" to="BlockAnimations" method="bounce_block" unbinds=1]

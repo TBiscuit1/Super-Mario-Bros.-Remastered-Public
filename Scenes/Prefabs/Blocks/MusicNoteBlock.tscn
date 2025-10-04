@@ -24,12 +24,13 @@ instrument = 0
 note = 3
 octave = 2
 play_sfx = false
+item_amount = 1
+combo_meter_amount = 25
+mushroom_if_small = false
+start_z = -1
 
 [node name="ResourceSetterNew" parent="Sprite" index="0"]
 resource_json = ExtResource("3_d6amy")
-
-[node name="EditorPropertyExposer" parent="." index="3"]
-properties = Array[String](["instrument", "note", "octave", "play_on_load"])
 
 [node name="Instrument" type="AudioStreamPlayer2D" parent="." index="4"]
 process_mode = 3
@@ -63,10 +64,13 @@ script = SubResource("GDScript_lw6l2")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="7"]
 
-[node name="TrackJoint" type="Node" parent="." index="8"]
+[node name="TrackJoint2" type="Node" parent="." index="8"]
 script = ExtResource("6_gpide")
 offset = Vector2(0, 0)
 metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
+
+[node name="EditorPropertyExposer" parent="." index="10"]
+properties = Array[String](["instrument", "note", "octave", "play_on_load"])
 
 [connection signal="bounced" from="." to="." method="play_sfx_preview"]
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="on_screen_entered"]

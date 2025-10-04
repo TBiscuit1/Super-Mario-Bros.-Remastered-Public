@@ -1,0 +1,72 @@
+{
+	"animations": {
+		"default": {
+			"frames": [[0, 0, 16, 16]],
+			"speed": 5.0,
+			"loop": true
+		}
+	},
+	"variations": {
+		"default": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 0, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 0, 16, 16] }
+		},
+		"Underground": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 16, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 16, 16, 16] }
+		},
+		"Desert": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 32, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 32, 16, 16] }
+		},
+		"Snow": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 48, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 48, 16, 16] }
+		},
+		"Jungle": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 64, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 64, 16, 16] }
+		},
+		"Beach": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 80, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 80, 16, 16] }
+		},
+		"Mountain": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 96, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 96, 16, 16] }
+		},
+		"Autumn": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 112, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 112, 16, 16] }
+		},
+		"Space": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 128, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 128, 16, 16] }
+		},
+		"Underwater": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 144, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 144, 16, 16] }
+		},
+		"Volcano": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 160, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 160, 16, 16] }
+		},
+		"GhostHouse": {
+			"link": "Underground"
+		},
+		"Castle": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 176, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 176, 16, 16] }
+		},
+		"CastleWater": {
+			"link": "Underwater"
+		},
+		"Airship": {
+			"link": "Mountain"
+		},
+		"Bonus": {
+			"SMB1": { "source": "HardBrickBlock.png", "rect": [0, 192, 16, 16] },
+			"SMBLL": { "source": "HardBrickBlock.png", "rect": [16, 192, 16, 16] }
+		}
+	}
+}

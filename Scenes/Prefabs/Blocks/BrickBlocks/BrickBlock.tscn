@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dsa8lpl7n8ge0"]
+[gd_scene load_steps=14 format=3 uid="uid://dsa8lpl7n8ge0"]
 
 [ext_resource type="Script" uid="uid://y53avulrmfx1" path="res://Scripts/Classes/Blocks/BrickBlock.gd" id="1_ci56s"]
 [ext_resource type="PackedScene" uid="uid://55lw62f6ol33" path="res://Scenes/Prefabs/Particles/BrickDestructionParticles.tscn" id="2_x80g6"]
@@ -10,8 +10,12 @@
 [ext_resource type="Script" uid="uid://bul1nbd2in1gn" path="res://Scripts/Classes/Components/PSwitcher.gd" id="7_43oa6"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="8_7ej1a"]
 [ext_resource type="Script" uid="uid://maqpreddu5kg" path="res://Scripts/Classes/Components/LevelPersistance.gd" id="9_10eph"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="11_5lt17"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b3g5f"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ndaqu"]
 size = Vector2(16, 16)
 
 [node name="BrickBlock" type="AnimatableBody2D" node_paths=PackedStringArray("visuals") groups=["Blocks"]]
@@ -40,6 +44,18 @@ metadata/_custom_type_script = "uid://cbal8ms2oe1ik"
 [node name="Collision" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("RectangleShape2D_b3g5f")
+
+[node name="HammerHitbox" type="Area2D" parent="."]
+
+[node name="HammerCollision" type="CollisionShape2D" parent="HammerHitbox"]
+visible = false
+shape = SubResource("RectangleShape2D_ndaqu")
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("11_5lt17")
+hitbox = NodePath("../HammerHitbox")
+play_sfx_on_hit = true
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
 
 [node name="BlockAnimations" parent="." instance=ExtResource("3_nyd82")]
 
@@ -73,5 +89,7 @@ metadata/_custom_type_script = "uid://maqpreddu5kg"
 [connection signal="player_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
 [connection signal="shell_block_hit" from="." to="." method="on_shell_block_hit"]
 [connection signal="shell_block_hit" from="." to="BlockAnimations" method="bounce_block" unbinds=1]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="on_hammer_block_hit"]
+[connection signal="hammer_hit" from="HammerDetection" to="BlockAnimations" method="bounce_block" unbinds=1]
 [connection signal="enabled" from="LevelPersistance" to="." method="spawn_empty_block"]
 [connection signal="enabled_2" from="LevelPersistance" to="." method="queue_free"]

@@ -8,6 +8,9 @@ const MOVE_SPEED := 30
 const SMOKE_PARTICLE = preload("uid://d08nv4qtfouv1")
 var direction := -1
 
+@export var on_screen_enabler: VisibleOnScreenNotifier2D = null
+@export var score_note_adder: ScoreNoteSpawner = null
+
 signal killed
 
 func _physics_process(delta: float) -> void:
@@ -34,19 +37,30 @@ func handle_movement(delta: float) -> void:
 func on_area_entered(area: Area2D) -> void:
 	if area.owner is Player:
 		if area.owner.is_invincible:
-			die()
+			summon_smoke_particle()
+			die(1000)
 		else:
 			area.owner.damage()
 
-func die() -> void:
-	summon_smoke_particle()
+func die(score: int) -> void:
 	queue_free()
 	killed.emit()
+	if score_note_adder != null:
+		score_note_adder.spawn_note(score)
 
 func flag_die() -> void:
-	die()
+	if on_screen_enabler != null:
+		if on_screen_enabler.is_on_screen():
+			queue_free()
+			if score_note_adder != null:
+				score_note_adder.spawn_note(500)
 
 func summon_smoke_particle() -> void:
 	var particle = SMOKE_PARTICLE.instantiate()
 	particle.global_position = global_position
 	add_sibling(particle)
+
+
+func die_from_object(_hammer: PlayerHammer) -> void:
+	$GibSpawner.summon_gib()
+	die(500)

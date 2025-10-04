@@ -9,7 +9,7 @@ const ENTITY_GIB = preload("res://Scenes/Prefabs/Entities/EntityGib.tscn")
 signal gib_about_to_spawn
 
 
-func summon_gib(direction := 1, play_sfx := play_death_sfx, override_gib_type := gib_type) -> void:
+func summon_gib(direction := 1, play_sfx := play_death_sfx, override_gib_type := gib_type) -> Node2D:
 	gib_about_to_spawn.emit()
 	if play_sfx:
 		play_die_sfx()
@@ -28,6 +28,8 @@ func summon_gib(direction := 1, play_sfx := play_death_sfx, override_gib_type :=
 	node.gib_type = override_gib_type
 	node.direction = direction
 	owner.add_sibling(node)
+	
+	return node
 
 func play_die_sfx() -> void:
 	AudioManager.play_sfx("kick", owner.global_position)

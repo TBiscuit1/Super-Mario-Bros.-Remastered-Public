@@ -14,6 +14,13 @@ func on_shell_block_hit(_shell: Shell) -> void:
 	else:
 		spin()
 
+func on_hammer_block_hit(hammer: PlayerHammer) -> void:
+	if item != null:
+		dispense_item()
+	else:
+		spin()
+	hammer.queue_free()
+
 func spin() -> void:
 	await get_tree().create_timer(0.15, false).timeout
 	var spinning = SPINNING_TURN_BLOCK.instantiate()

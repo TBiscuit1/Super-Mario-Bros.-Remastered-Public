@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://duptcik2j0b04"]
+[gd_scene load_steps=42 format=3 uid="uid://duptcik2j0b04"]
 
 [ext_resource type="Texture2D" uid="uid://d3sxabber73q6" path="res://Assets/Sprites/Enemies/Bowser.png" id="1_8mi7o"]
 [ext_resource type="Script" uid="uid://wtypg4d0l6j2" path="res://Scripts/Classes/Entities/Enemies/Bowser.gd" id="1_ma5fd"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://cmvlgsjmsk0v5" path="res://Scripts/Classes/Resources/ThemedResource.gd" id="6_pvhfi"]
 [ext_resource type="Script" uid="uid://c3gg32ivrlq8n" path="res://Scripts/Classes/Components/GibSpawner.gd" id="6_va0n6"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/Goomba.json" id="9_exf4b"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="11_mcog5"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="11_pvhfi"]
 [ext_resource type="Script" uid="uid://cqif1li7otvpl" path="res://Scripts/Parts/SpriteFramesToJsonConverter.gd" id="14_nf6hu"]
 [ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="15_nf6hu"]
@@ -341,6 +342,11 @@ script = ExtResource("4_kfwlq")
 hitbox = NodePath("../SpriteScaleJoint/Sprite/Hitbox")
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("11_mcog5")
+hitbox = NodePath("../SpriteScaleJoint/Sprite/Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="GibSpawner" type="Node" parent="." node_paths=PackedStringArray("visuals")]
 script = ExtResource("6_va0n6")
 visuals = NodePath("../SpriteScaleJoint/DeathSprite")
@@ -381,7 +387,7 @@ metadata/_custom_type_script = "uid://cqif1li7otvpl"
 
 [node name="EditorPropertyExposer" type="Node" parent="."]
 script = ExtResource("15_nf6hu")
-properties = Array[String](["can_hammer", "can_fire"])
+properties = Array[String](["can_hammer", "can_fire", "starts_boss_theme", "health"])
 
 [node name="TrackJoint" type="Node" parent="."]
 script = ExtResource("17_5b235")
@@ -403,14 +409,15 @@ hitbox = NodePath("../SpriteScaleJoint/Sprite/Hitbox")
 metadata/_custom_type_script = "uid://ba18grqjixded"
 
 [connection signal="killed" from="." to="GibSpawner" method="summon_gib"]
-[connection signal="killed" from="." to="ScoreNoteSpawner" method="spawn_note" binds= [5000]]
 [connection signal="killed" from="." to="." method="show_smoke" unbinds=1]
+[connection signal="killed" from="." to="ScoreNoteSpawner" method="spawn_note" binds= [5000]]
 [connection signal="area_entered" from="SpriteScaleJoint/Sprite/Hitbox" to="." method="on_area_entered"]
 [connection signal="timeout" from="JumpTimer" to="." method="jump"]
 [connection signal="timeout" from="HammerTime" to="." method="throw_hammers"]
 [connection signal="timeout" from="FlameTimer" to="." method="breathe_fire"]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="fireball_hit" unbinds=1]
-[connection signal="screen_entered" from="VisibleOnScreenEnabler2D" to="." method="play_music" flags=6]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="hammer_hit"]
+[connection signal="screen_entered" from="VisibleOnScreenEnabler2D" to="." method="play_music"]
 [connection signal="attached" from="TrackJoint" to="MoveAnimation" method="play" binds= ["RESET"]]
 [connection signal="moving_shell_entered" from="ShellDetection" to="ShellDetection" method="destroy_shell"]
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="fireball_hit" unbinds=1]

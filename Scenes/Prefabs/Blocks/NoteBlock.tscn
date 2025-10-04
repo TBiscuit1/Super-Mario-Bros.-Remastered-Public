@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://bxvcax2wc48xh"]
+[gd_scene load_steps=17 format=3 uid="uid://bxvcax2wc48xh"]
 
 [ext_resource type="Script" uid="uid://c0diue1hemrxq" path="res://Scripts/Classes/Blocks/NoteBlock.gd" id="1_lhrvd"]
 [ext_resource type="Script" uid="uid://cbal8ms2oe1ik" path="res://Scripts/Classes/Components/ResourceSetterNew.gd" id="2_jg54v"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Blocks/NoteBlock.json" id="4_lhrvd"]
 [ext_resource type="Texture2D" uid="uid://bk4q17a2esuy1" path="res://Assets/Sprites/Blocks/NoteBlock.png" id="4_pp28j"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="5_4015b"]
 [ext_resource type="Script" uid="uid://d4a7yp6e55u8t" path="res://Scripts/Classes/Components/TrackJoint.gd" id="6_4015b"]
 [ext_resource type="Script" uid="uid://ctfbuoxtnnl0q" path="res://Scripts/Classes/Components/EditorPropertyExposer.gd" id="6_jg54v"]
 
@@ -24,6 +25,9 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jg54v"]
 size = Vector2(14, 9.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pp28j"]
+size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4015b"]
 size = Vector2(16, 16)
@@ -126,6 +130,18 @@ shape = SubResource("RectangleShape2D_jg54v")
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Sprite"]
 remote_path = NodePath("../../Collision")
 
+[node name="HammerHitbox" type="Area2D" parent="."]
+
+[node name="HammerCollision" type="CollisionShape2D" parent="HammerHitbox"]
+visible = false
+shape = SubResource("RectangleShape2D_pp28j")
+
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("5_4015b")
+hitbox = NodePath("../HammerHitbox")
+play_sfx_on_hit = true
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4015b")
 
@@ -151,3 +167,4 @@ metadata/_custom_type_script = "uid://d4a7yp6e55u8t"
 [connection signal="player_block_hit" from="." to="." method="bounce_up" unbinds=1]
 [connection signal="shell_block_hit" from="." to="." method="bounce_up" unbinds=1]
 [connection signal="area_entered" from="Sprite/Area" to="." method="on_area_entered"]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="bounce_up"]

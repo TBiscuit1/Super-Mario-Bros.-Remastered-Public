@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://cuh62hlq8errh"]
+[gd_scene load_steps=86 format=3 uid="uid://cuh62hlq8errh"]
 
 [ext_resource type="Script" uid="uid://dt4rosa5o35xr" path="res://Scripts/Classes/Entities/Player.gd" id="1_f6bau"]
 [ext_resource type="Script" uid="uid://uribh0f1jttq" path="res://Scripts/Classes/States/StateMachine.gd" id="2_1y62l"]
@@ -33,6 +33,7 @@
 [ext_resource type="Script" uid="uid://cp1bh6fi6tpa5" path="res://Scripts/Classes/Components/ScalableCollisionShape.gd" id="21_jl70t"]
 [ext_resource type="Script" uid="uid://cqif1li7otvpl" path="res://Scripts/Parts/SpriteFramesToJsonConverter.gd" id="22_445e4"]
 [ext_resource type="SpriteFrames" uid="uid://dw8r8t7iqvrmq" path="res://Resources/SpriteFrames/Player/Luigi/Fire.tres" id="23_445e4"]
+[ext_resource type="Script" uid="uid://d1tqav61is6re" path="res://Scripts/Classes/PowerStates/Hammer.gd" id="23_pm4ir"]
 [ext_resource type="Script" uid="uid://cmvlgsjmsk0v5" path="res://Scripts/Classes/Resources/ThemedResource.gd" id="24_hu5lw"]
 [ext_resource type="Script" uid="uid://cbal8ms2oe1ik" path="res://Scripts/Classes/Components/ResourceSetterNew.gd" id="25_cekpg"]
 [ext_resource type="JSON" path="res://Assets/Sprites/Players/Mario/Small.json" id="26_o4wvw"]
@@ -652,6 +653,14 @@ metadata/_custom_type_script = "uid://c8xvkkv34fjr4"
 [node name="Fire" type="Node" parent="PowerStates" node_paths=PackedStringArray("damage_state")]
 script = ExtResource("6_7nbqp")
 state_name = "Fire"
+power_tier = 2
+hitbox_size = "Big"
+damage_state = NodePath("../Big")
+metadata/_custom_type_script = "uid://c8xvkkv34fjr4"
+
+[node name="Hammer" type="Node" parent="PowerStates" node_paths=PackedStringArray("damage_state")]
+script = ExtResource("23_pm4ir")
+state_name = "Hammer"
 power_tier = 2
 hitbox_size = "Big"
 damage_state = NodePath("../Big")

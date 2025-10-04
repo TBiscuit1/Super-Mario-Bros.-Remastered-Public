@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://boha0avw8jj2w"]
+
+[ext_resource type="Script" uid="uid://cfex5s6s4epnw" path="res://Scripts/Classes/Blocks/InvisibleBarrier.gd" id="1_4l5jw"]
+[ext_resource type="PackedScene" uid="uid://bxxjd0qf60t5q" path="res://Scenes/Prefabs/Particles/EmptyBlockDestructionParticles.tscn" id="2_mnk7n"]
+[ext_resource type="Texture2D" uid="uid://c3jwpnopytaqe" path="res://Assets/Sprites/Blocks/InvisibleBarrier.png" id="3_4l5jw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_74q7l"]
+size = Vector2(16, 16)
+
+[node name="InvisibleBarrier" type="AnimatableBody2D"]
+process_mode = 3
+z_index = -1
+collision_layer = 6
+collision_mask = 0
+sync_to_physics = false
+script = ExtResource("1_4l5jw")
+destructable = false
+destruction_particle_scene = ExtResource("2_mnk7n")
+metadata/_custom_type_script = "uid://b5ejlbl0vp1gm"
+metadata/is_empty = true
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_4l5jw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_74q7l")

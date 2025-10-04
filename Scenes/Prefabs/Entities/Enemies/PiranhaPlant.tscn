@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://1rxw4k4wq3ni"]
+[gd_scene load_steps=23 format=3 uid="uid://1rxw4k4wq3ni"]
 
 [ext_resource type="Texture2D" uid="uid://dbq6cn2hp6ijx" path="res://Assets/Sprites/Enemies/PiranhaPlant.png" id="1_2imih"]
 [ext_resource type="Script" uid="uid://d23hoj2qc2whq" path="res://Scripts/Classes/Entities/Enemies/PiranhaPlant.gd" id="1_jbk0f"]
@@ -6,6 +6,7 @@
 [ext_resource type="JSON" path="res://Assets/Sprites/Enemies/PiranhaPlant.json" id="4_xp8sq"]
 [ext_resource type="Script" uid="uid://chj8hu207lrh" path="res://Scripts/Classes/Components/EnemyPlayerDetection.gd" id="6_471w1"]
 [ext_resource type="Script" uid="uid://dri2d5jtu0fbq" path="res://Scripts/Classes/Components/FireballDetection.gd" id="7_471w1"]
+[ext_resource type="Script" uid="uid://ugm6suq4x4cp" path="res://Scripts/Classes/Components/HammerDetection.gd" id="7_qrjrw"]
 [ext_resource type="Script" uid="uid://5octqlf4ohel" path="res://Scripts/Classes/Components/ScoreNoteSpawner.gd" id="8_xp8sq"]
 [ext_resource type="Script" uid="uid://cpwloakvp672a" path="res://Scripts/Parts/EditorVisibleNode.gd" id="9_tmwyr"]
 [ext_resource type="Script" uid="uid://bbww34oiexbx2" path="res://Scripts/Classes/Components/ShellDetection.gd" id="10_uohcg"]
@@ -260,6 +261,11 @@ script = ExtResource("7_471w1")
 hitbox = NodePath("../Sprite/Hitbox")
 metadata/_custom_type_script = "uid://dri2d5jtu0fbq"
 
+[node name="HammerDetection" type="Node" parent="." node_paths=PackedStringArray("hitbox")]
+script = ExtResource("7_qrjrw")
+hitbox = NodePath("../Sprite/Hitbox")
+metadata/_custom_type_script = "uid://ugm6suq4x4cp"
+
 [node name="ScoreNoteSpawner" type="Node" parent="."]
 script = ExtResource("8_xp8sq")
 add_score = true
@@ -315,6 +321,8 @@ script = SubResource("GDScript_ofvpu")
 [connection signal="player_stomped_on" from="EnemyPlayerDetection" to="." method="damage_player"]
 [connection signal="fireball_hit" from="FireballDetection" to="." method="die_from_object"]
 [connection signal="fireball_hit" from="FireballDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
+[connection signal="hammer_hit" from="HammerDetection" to="." method="die_from_object"]
+[connection signal="hammer_hit" from="HammerDetection" to="ScoreNoteSpawner" method="spawn_note" binds= [200]]
 [connection signal="moving_shell_entered" from="ShellDetection" to="." method="die_from_object"]
 [connection signal="moving_shell_entered" from="ShellDetection" to="ScoreNoteSpawner" method="play_death_sfx" unbinds=1]
 [connection signal="explosion_entered" from="ExplosionDetection" to="." method="die_from_object"]
